@@ -25,7 +25,7 @@ import static android.graphics.Color.GREEN;
 //https://developers.google.com/nearby/connections/overview
 //https://developer.android.com/training/connect-devices-wirelessly
 
-public class MainActivity extends AppCompatActivity implements SensorEventListener {
+public class MainActivity extends AppCompatActivity implements SensorEventListener { //This new comment of mine
 
     private TextView m_wifiStatusText;
     private ImageView m_imgGesturePerformed;
