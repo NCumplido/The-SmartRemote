@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">The SmartRemote</string>
+    <string name="btn_connect">Connect to a device</string>
+    <string name="txt_welcome">Choose what you would like to do from the options below</string>
+    <string name="btn_view_gestures">View performable gestures</string>
+    <string name="btn_list_available_sensors">List available sensors</string>
+    <string name="btn_acceleration_and_orientation">View acceleration and orientation</string>
+    <string name="connection_status">Connection Status:</string>
+    <string name="connected_devices">Connected Devices:</string>
+    <string name="todo">TODO</string>
+    <string name="calibrate_gestures">Calibrate gestures</string>
+    <string name="yaw_val">Yaw Val:</string>
+    <string name="add_device">Add device</string>
+    <string name="txt_compass_value">\Compass: </string>
+    <string name="edit_details">Edit details</string>
+    <string name="assign_gestures">Assign Gestures</string>
+    <string name="btn_delete">Delete</string>
+    <string name="txt_name" />
+    <string name="txt_room" />
+    <string name="btn_csnt_see_device">Can\'t see device?</string>
+    <string name="txt_compass" />
+    <string name="btn_select_device">Select</string>
+    <string name="txt_rotate_output" />
+    <string name="btn_accel">Accel-Flick</string>
+    <string name="btn_orient">Orientation-Left Right</string>
+    <string name="btn_swipe">Swipe...</string>
+    <string name="btn_manage_devices">Manage devices</string>
+    <string name="txt_wifi_status">Wifi:</string>
+    <string name="btn_cal_start">Tap to begin calibration</string>
+    <string name="btn_cal_end">Tap to finish calibration</string>
+    <string name="txt_is_complete" />
+    <string name="tap_to_begin_then_press_and_hold_while_you_make_your_gesture_flick_up_left_and_right_rotate_clockwise_and_anticlockwise">Tap to begin, then press and hold while you make your gesture. Flick: up, left and right. Rotate: clockwise and anticlockwise.</string>
+    <string name="txt_connected_status">Connected</string>
+</resources>

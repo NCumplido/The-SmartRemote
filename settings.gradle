@@ -1,0 +1,2 @@
+rootProject.name='The SmartRemote'
+include ':app'
