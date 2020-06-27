@@ -27,7 +27,8 @@ import static android.graphics.Color.GREEN;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener { //This new comment of mine
 
-    private TextView m_wifiStatusText;
+    private TextView m_txtWifiStatus,
+    m_txtTimeTest;
     private ImageView m_imgGesturePerformed;
 
     private SensorManager m_sensorManager;
@@ -97,11 +98,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private void setupView() {
 
-        m_wifiStatusText = findViewById(R.id.txt_connect_status);
-        m_wifiStatusText.setTypeface(m_wifiStatusText.getTypeface(), Typeface.ITALIC);
-        m_wifiStatusText.setTextColor(GREEN);
+        m_txtWifiStatus = findViewById(R.id.txt_connect_status);
+        m_txtWifiStatus.setTypeface(m_txtWifiStatus.getTypeface(), Typeface.ITALIC);
+        m_txtWifiStatus.setTextColor(GREEN);
 
+        m_txtTimeTest =findViewById(R.id.txt_time_test);
         m_imgGesturePerformed = findViewById(R.id.img_gesture_performed);
+
+        m_txtTimeTest.setText("SystemNanoTime: " + System.nanoTime()
+                + "\n SystemCurrentTimeMillis: " + System.currentTimeMillis());
 
     }
 
@@ -128,6 +133,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 {
                     m_isgestureListen = false;
                 }
+            }
+        });
+
+        m_txtTimeTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                m_txtTimeTest.setText("SystemNanoTime: " + System.nanoTime()
+                        + "\n SystemCurrentTimeMillis: " + System.currentTimeMillis());
+
             }
         });
     }
@@ -170,9 +184,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         m_orienty = sensorEvent.values[1];
                         m_orientz = sensorEvent.values[2];
 
-                        if (m_orientx > 90 && 95 > m_orientx) {
+                        if (m_orientx > 60 && 90 > m_orientx) {
                             m_imgGesturePerformed.setImageResource(R.drawable.clockwise_rotate_arrow);
-                        } else if (m_orientx > 270 && 275 > m_orientx) {
+                        } else if (m_orientx > 240 && 260 > m_orientx) {
                             m_imgGesturePerformed.setImageResource(R.drawable.anticlockwise_arrow_rotate);
                         }
 
