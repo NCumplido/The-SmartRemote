@@ -1,5 +1,6 @@
 package nich.project.thesmartremote;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.hardware.Sensor;
@@ -7,17 +8,22 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
 import static android.graphics.Color.GREEN;
+import static android.view.WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON;
 
 //https://developer.android.com/reference/android/net/wifi/WifiManager
 //https://developer.android.com/training/connect-devices-wirelessly/wifi-direct Create P2P connections with Wi-Fi Direct
@@ -32,13 +38,18 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private ImageView m_imgGesturePerformed;
 
     private SensorManager m_sensorManager;
-    private Sensor m_sensorAccel, m_sensorGyro;
+    private Sensor m_sensorAccel,
+            m_sensorGyro,
+            m_sensorProxim;
 
     private List<Sensor> m_deviceSensorsList;
     private ArrayList<Sensor> m_requiredSensorsList;
 
     private float m_ZFlickThreshold = 10, m_XFlickThreshold = 10, m_YFlickThreshold = 10;
-    private float m_orientx, m_orienty, m_orientz;
+    private float m_orientx,
+                    m_orienty,
+                    m_orientz,
+                    m_previousProxValue;
 
     private String m_SensorsNotProvideByDevice;
 
@@ -70,9 +81,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         m_sensorAccel = m_sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         m_sensorGyro = m_sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        m_sensorProxim = m_sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
 
         m_requiredSensorsList.add(m_sensorAccel);
         m_requiredSensorsList.add(m_sensorGyro);
+        m_requiredSensorsList.add(m_sensorProxim);
+
 
         if (m_deviceSensorsList.contains(m_sensorAccel)) {
             //Toast.makeText(getApplicationContext(),"m_sensorAccel",Toast.LENGTH_SHORT).show();
@@ -86,7 +100,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         else
         {m_SensorsNotProvideByDevice += " Gyroscope";}
 
-        if(m_SensorsNotProvideByDevice != null){ openErrorDialogue(m_SensorsNotProvideByDevice); }
+        if (m_deviceSensorsList.contains(m_sensorProxim)) {
+            //Toast.makeText(getApplicationContext(),"m_sensorGyro",Toast.LENGTH_SHORT).show();
+        }
+        else
+        {m_SensorsNotProvideByDevice += " Proximity";}
+
+        if(m_SensorsNotProvideByDevice != null){
+            openErrorDialogue(m_SensorsNotProvideByDevice);
+        }
 
     }
 
@@ -117,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         //linear acceleration = acceleration - acceleration due to gravity
         m_sensorAccel = m_sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         m_sensorManager.registerListener(this, m_sensorAccel, SensorManager.SENSOR_DELAY_NORMAL);
+        m_sensorManager.registerListener(this, m_sensorProxim, SensorManager.SENSOR_DELAY_NORMAL);
 
         m_sensorManager.registerListener(this,
                 m_sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
@@ -160,6 +183,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
 
+        if(sensorEvent.sensor.getType() == Sensor.TYPE_PROXIMITY && sensorEvent.values[0] > 7){
+            Toast.makeText(getApplicationContext(),"YeaBwoiProxim",Toast.LENGTH_SHORT).show();
+
+//            Window window = this.getWindow(); //to get the window of your activity;
+//            window.addFlags(FLAG_TURN_SCREEN_ON);
+//            //WindowManager.LayoutParams(FLAG_TURN_SCREEN_ON) //that you desire:            FLAG_TURN_SCREEN_ON
+        }
+
         if (m_isgestureListen == true) {
             synchronized (this) {
                 switch (sensorEvent.sensor.getType()) {
@@ -195,6 +226,28 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
 
     }
+
+//    private void proximitySensorMethod(SensorEvent event) {
+//        Log.d("debug", "Proximity Activity " + event.values[0]);
+//
+//        Log.d("debug", "previous Value: " + m_previousProxValue);
+//
+//        PowerManager pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
+//
+//        if(pm.isDeviceIdleMode()){
+//            if(event.values[0] > 0.0 ) {
+//                PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "app:ScreenWake");
+//                wakeLock.acquire();
+//                Log.d("debug", "wakeLock acquired");
+//                wakeLock.release();
+//            }
+//        }
+//
+//        m_previousProxValue = event.values[0];
+//
+//        Log.d("debug", "new previous Value: " + m_previousProxValue);
+//    }
+
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
