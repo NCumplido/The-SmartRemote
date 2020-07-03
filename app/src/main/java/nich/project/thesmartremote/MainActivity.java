@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void onSensorChanged(SensorEvent sensorEvent) {
 
         if(sensorEvent.sensor.getType() == Sensor.TYPE_PROXIMITY && sensorEvent.values[0] > 7){
-            Toast.makeText(getApplicationContext(),"YeaBwoiProxim",Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getApplicationContext(),"YeaBwoiProxim",Toast.LENGTH_SHORT).show();
 
 //            Window window = this.getWindow(); //to get the window of your activity;
 //            window.addFlags(FLAG_TURN_SCREEN_ON);

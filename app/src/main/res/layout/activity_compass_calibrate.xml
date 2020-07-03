@@ -13,21 +13,36 @@
         android:layout_height="wrap_content"
         android:text="Point to device and press add to save its bearing" />
 
-    <ImageButton
-        android:id="@+id/img_btn_add"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_input_add" />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/btn_save"
-        android:layout_width="wrap_content"
+        <ImageButton
+            android:id="@+id/img_btn_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@android:drawable/ic_input_add" />
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Save" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txt_saved_list"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save" />
+        android:text="Saved devices:" />
 
     <Button
         android:id="@+id/btn_done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Done" />
+
 </LinearLayout>
