@@ -1,11 +1,21 @@
 package nich.project.thesmartremote;
 
+/*
+Some code from:
+
+Dr. Tom Owen: CSC306
+Dr. Deepak Sahoo: CSCM79
+Swansea University
+
+ */
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -22,7 +32,7 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
 
     int m_compassValues;
 
-    Button m_btnSave,
+    Button m_btnClear,
            m_btnDone;
 
     TextView m_txtSavedList;
@@ -32,10 +42,17 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
 
     ImageButton m_imgBtnAdd;
 
+    SharedPreferences m_sharedPref;
+    SharedPreferences.Editor m_editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass_calibrate);
+
+        // 0 - for private mode
+        m_sharedPref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        m_editor = m_sharedPref.edit();
 
         setupView();
 
@@ -47,13 +64,20 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
 
     private void setupView() {
 
-        m_btnSave = findViewById(R.id.btn_save);
+        m_btnClear = findViewById(R.id.btn_clear);
         m_btnDone = findViewById(R.id.btn_done);
 
         //TODO: Replace with select from list
         m_imgBtnAdd = findViewById(R.id.img_btn_add);
 
         m_txtSavedList = findViewById(R.id.txt_saved_list);
+
+        //String deviceList = m_sharedPref.getAll(); TODO: Make dynamic for multiple items for list
+
+        String deviceName = m_sharedPref.getString("device_name", null); // getting String
+        int device_bearing = m_sharedPref.getInt("compass_bearing", 0); // getting Integer
+
+        m_txtSavedList.setText("Saved devices: \n" + deviceName + " " + device_bearing );
     }
 
     private void setupSensors() {
@@ -63,6 +87,7 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
     }
 
     private void setupListeners() {
+        m_sensorManager.registerListener(this, m_compassSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
         m_btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,12 +97,17 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
             }
         });
 
-        m_sensorManager.registerListener(this, m_compassSensor, SensorManager.SENSOR_DELAY_NORMAL);
-
         m_imgBtnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showInputDialog();
+            }
+        });
+
+        m_btnClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getApplicationContext().getSharedPreferences("MyPref", 0).edit().clear().apply();
             }
         });
     }
@@ -86,16 +116,20 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
 
         // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(CompassCalibrateActivity.this);
-        View promptView = layoutInflater.inflate(R.layout.input_dialogue, null);
+        View inputDialogueView = layoutInflater.inflate(R.layout.input_dialogue, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CompassCalibrateActivity.this);
-        alertDialogBuilder.setView(promptView);
+        alertDialogBuilder.setView(inputDialogueView);
 
-        final EditText editTextName = (EditText) promptView.findViewById(R.id.edit_text_name);
+        final EditText deviceNameEditText = inputDialogueView.findViewById(R.id.edit_text_name);
         // setup a dialog window
         alertDialogBuilder.setCancelable(false)
-                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        m_txtSavedList.append("\n" + editTextName.getText() + " " + m_compassValues + "\n");
+                        m_txtSavedList.append("\n" + deviceNameEditText.getText() + " " + m_compassValues + "\n");
+
+                        m_editor.putString("device_name", String.valueOf(deviceNameEditText.getText())); // Storing string
+                        m_editor.putInt("compass_bearing", m_compassValues); // Storing integer
+                        m_editor.commit(); // commit changes
                     }
                 })
                 .setNegativeButton("Cancel",

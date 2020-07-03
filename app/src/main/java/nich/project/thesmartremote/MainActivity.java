@@ -1,6 +1,14 @@
 package nich.project.thesmartremote;
 
-import android.app.Activity;
+/*
+Some code from:
+
+Dr. Tom Owen: CSC306
+Dr. Deepak Sahoo: CSCM79
+Swansea University
+
+ */
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,17 +18,11 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.os.PowerManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.graphics.Color.GREEN;
-import static android.view.WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON;
 
 //https://developer.android.com/reference/android/net/wifi/WifiManager
 //https://developer.android.com/training/connect-devices-wirelessly/wifi-direct Create P2P connections with Wi-Fi Direct
@@ -201,7 +202,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();                    }
+                        dialog.cancel();
+                    }
                 });
 
         // create an alert dialog
