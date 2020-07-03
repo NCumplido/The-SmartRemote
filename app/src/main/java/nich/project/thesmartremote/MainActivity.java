@@ -2,6 +2,7 @@ package nich.project.thesmartremote;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -35,7 +36,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private TextView m_txtWifiStatus,
     m_txtTimeTest;
-    private ImageView m_imgGesturePerformed;
+    private ImageView m_imgGesturePerformed,
+                        m_imgCalibrate;
 
     private SensorManager m_sensorManager;
     private Sensor m_sensorAccel,
@@ -130,6 +132,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         m_txtTimeTest.setText("SystemNanoTime: " + System.nanoTime()
                 + "\n SystemCurrentTimeMillis: " + System.currentTimeMillis());
 
+        m_imgCalibrate = findViewById(R.id.img_calibrate);
+
     }
 
     /////////////////////////////////////////////////////// LISTENERS ///////////////////////////////////////////////////////
@@ -165,6 +169,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 m_txtTimeTest.setText("SystemNanoTime: " + System.nanoTime()
                         + "\n SystemCurrentTimeMillis: " + System.currentTimeMillis());
 
+            }
+        });
+
+        m_imgCalibrate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent CompassCalibrateintent = new Intent(getApplicationContext(), CompassCalibrateActivity.class);
+                startActivity(CompassCalibrateintent);
             }
         });
     }
