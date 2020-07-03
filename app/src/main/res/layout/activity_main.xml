@@ -64,12 +64,6 @@
         android:layout_height="wrap_content"
         android:text="@string/tap_to_begin_then_press_and_hold_while_you_make_your_gesture_flick_up_left_and_right_rotate_clockwise_and_anticlockwise" />
 
-    <TextView
-        android:id="@+id/txt_time_test"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
-
     <ImageView
         android:id="@+id/img_gesture_performed"
         android:layout_width="match_parent"

@@ -34,8 +34,8 @@ import static android.view.WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener { //This new comment of mine
 
-    private TextView m_txtWifiStatus,
-    m_txtTimeTest;
+    private TextView m_txtWifiStatus;
+
     private ImageView m_imgGesturePerformed,
                         m_imgCalibrate;
 
@@ -126,11 +126,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         m_txtWifiStatus.setTypeface(m_txtWifiStatus.getTypeface(), Typeface.ITALIC);
         m_txtWifiStatus.setTextColor(GREEN);
 
-        m_txtTimeTest =findViewById(R.id.txt_time_test);
         m_imgGesturePerformed = findViewById(R.id.img_gesture_performed);
-
-        m_txtTimeTest.setText("SystemNanoTime: " + System.nanoTime()
-                + "\n SystemCurrentTimeMillis: " + System.currentTimeMillis());
 
         m_imgCalibrate = findViewById(R.id.img_calibrate);
 
@@ -160,15 +156,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 {
                     m_isgestureListen = false;
                 }
-            }
-        });
-
-        m_txtTimeTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                m_txtTimeTest.setText("SystemNanoTime: " + System.nanoTime()
-                        + "\n SystemCurrentTimeMillis: " + System.currentTimeMillis());
-
             }
         });
 
@@ -238,27 +225,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
 
     }
-
-//    private void proximitySensorMethod(SensorEvent event) {
-//        Log.d("debug", "Proximity Activity " + event.values[0]);
-//
-//        Log.d("debug", "previous Value: " + m_previousProxValue);
-//
-//        PowerManager pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
-//
-//        if(pm.isDeviceIdleMode()){
-//            if(event.values[0] > 0.0 ) {
-//                PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "app:ScreenWake");
-//                wakeLock.acquire();
-//                Log.d("debug", "wakeLock acquired");
-//                wakeLock.release();
-//            }
-//        }
-//
-//        m_previousProxValue = event.values[0];
-//
-//        Log.d("debug", "new previous Value: " + m_previousProxValue);
-//    }
 
 
     @Override
