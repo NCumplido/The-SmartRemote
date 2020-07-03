@@ -2,6 +2,7 @@ package nich.project.thesmartremote;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.hardware.Sensor;
@@ -11,13 +12,17 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -36,10 +41,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private TextView m_txtWifiStatus;
 
+    private Button m_btnTestError;
+
     private ImageView m_imgGesturePerformed,
                         m_imgCalibrate;
 
     private SensorManager m_sensorManager;
+
     private Sensor m_sensorAccel,
             m_sensorGyro,
             m_sensorProxim;
@@ -47,7 +55,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private List<Sensor> m_deviceSensorsList;
     private ArrayList<Sensor> m_requiredSensorsList;
 
-    private float m_ZFlickThreshold = 10, m_XFlickThreshold = 10, m_YFlickThreshold = 10;
+    private float m_ZFlickThreshold = 10,
+                m_XFlickThreshold = 10,
+                m_YFlickThreshold = 10;
     private float m_orientx,
                     m_orienty,
                     m_orientz,
@@ -130,6 +140,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         m_imgCalibrate = findViewById(R.id.img_calibrate);
 
+        m_btnTestError = findViewById(R.id.btn_test_error);
+
     }
 
     /////////////////////////////////////////////////////// LISTENERS ///////////////////////////////////////////////////////
@@ -166,6 +178,35 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 startActivity(CompassCalibrateintent);
             }
         });
+
+        m_btnTestError.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showErrorDialogue();
+            }
+        });
+    }
+
+    /////////////////////////////////////////////////////// ERROR DIALOGUE /////////////////////////////////////////////////
+
+    private void showErrorDialogue(){
+        // get prompts.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
+        View promptView = layoutInflater.inflate(R.layout.error_dialogue, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        alertDialogBuilder.setView(promptView);
+
+        final TextView txtViewErrorMessage = promptView.findViewById(R.id.txt_error_message);
+        // setup a dialog window
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();                    }
+                });
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
     }
 
     /////////////////////////////////////////////////////// DEVICE CHECKS //////////////////////////////////////////////////
