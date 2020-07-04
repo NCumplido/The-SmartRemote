@@ -1,5 +1,12 @@
 package nich.project.thesmartremote;
 
+/*
+Some code from:
+
+Dr. Tom Owen: CSC306
+Swansea University
+ */
+
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;

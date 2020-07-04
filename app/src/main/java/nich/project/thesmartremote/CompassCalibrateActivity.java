@@ -6,7 +6,6 @@ Some code from:
 Dr. Tom Owen: CSC306
 Dr. Deepak Sahoo: CSCM79
 Swansea University
-
  */
 
 import androidx.appcompat.app.AlertDialog;
