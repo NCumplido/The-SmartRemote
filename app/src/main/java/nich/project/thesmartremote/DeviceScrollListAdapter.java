@@ -21,7 +21,7 @@ import static android.graphics.Color.RED;
 
 class DeviceScrollListAdapter extends ArrayAdapter<String> {
 
-    boolean m_isConnected;
+    private boolean m_isConnected;
 
     public DeviceScrollListAdapter(@NonNull Context context, String[] deviceNames, String[] deviceLocations) {
         super(context, R.layout.device_item, deviceNames); //TODO Need to add deviceLocations[] etc somehow, maybe through Device objects
@@ -45,12 +45,10 @@ class DeviceScrollListAdapter extends ArrayAdapter<String> {
 
         TextView txtDeviceName = customDeviceView.findViewById(R.id.txt_name);
         TextView txtDeviceRoom = customDeviceView.findViewById(R.id.txt_room);
-        ImageView imgDevicePic = customDeviceView.findViewById(R.id.img_device);
-        TextView txtIsonline = customDeviceView.findViewById(R.id.txt_is_online);
 
         txtDeviceName.setText(singleDeviceName);
         //TODO: txtDeviceRoom.setText();
-        imgDevicePic.setImageResource(R.drawable.ic_launcher_foreground); //TODO: Use array
+        //imgDevicePic.setImageResource(R.drawable.ic_launcher_foreground); //TODO: Use array
 
         String tempString = "Conected";
         SpannableString spanConnected = new SpannableString(tempString);
@@ -60,6 +58,7 @@ class DeviceScrollListAdapter extends ArrayAdapter<String> {
         SpannableString spanDisconnected = new SpannableString(tempStringDisconnected);
         spanDisconnected.setSpan(new StyleSpan(Typeface.ITALIC), 0, spanDisconnected.length(), 0);
 
+        /*
         if(m_isConnected == true){
             txtIsonline.setText(spanConnected);
             txtIsonline.setTextColor(GREEN);
@@ -68,7 +67,7 @@ class DeviceScrollListAdapter extends ArrayAdapter<String> {
             txtIsonline.setText(spanDisconnected);
             txtIsonline.setTextColor(RED);
         }
-
+*/
         return customDeviceView;
     }
 }

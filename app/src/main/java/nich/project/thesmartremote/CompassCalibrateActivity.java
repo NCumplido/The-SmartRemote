@@ -8,6 +8,7 @@ Dr. Deepak Sahoo: CSCM79
 Swansea University
  */
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,36 +23,57 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class CompassCalibrateActivity extends AppCompatActivity implements SensorEventListener {
 
-    int m_compassValues;
+    private int m_compassValues;
 
-    Button m_btnClear,
+    private Button m_btnClear,
            m_btnDone;
 
-    TextView m_txtSavedList;
+    private SensorManager m_sensorManager;
+    private Sensor m_compassSensor;
 
-    SensorManager m_sensorManager;
-    Sensor m_compassSensor;
+    private ImageButton m_imgBtnAdd;
 
-    ImageButton m_imgBtnAdd;
-
-    SharedPreferences m_sharedPref;
-    SharedPreferences.Editor m_editor;
+    private ArrayAdapter<Device> m_adapter;
+    ListView m_lstView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass_calibrate);
 
-        // 0 - for private mode
-        m_sharedPref = getApplicationContext().getSharedPreferences("MyPref", 0);
-        m_editor = m_sharedPref.edit();
+        // Get a support ActionBar corresponding to this toolbar
+        ActionBar ab = getSupportActionBar();
+// Enable the Up button
+        ab.setDisplayHomeAsUpEnabled(true);
+
+        ///////////////////////////////////////////////////// EXAMPLE STUFF WILL REMOVE ONCE SQL HAS BEEN SETUP /////////////////////////////////////////////////////
+        Device tv = new Device("Tv", 360);
+        Device light = new Device("Light", 180);
+        Device smartSwitch = new Device("smartSwitch", 90);
+        ArrayList<Device> deviceListExample = new ArrayList<>();
+        deviceListExample.add(tv);
+        deviceListExample.add(light);
+        deviceListExample.add(smartSwitch);
+
+        m_lstView = findViewById(R.id.lst_device_bearing);
+
+        ListAdapter adapter = new
+                DeviceBearingListAdapter(this, deviceListExample);
+
+        m_lstView.setAdapter(adapter);
 
         setupView();
 
@@ -61,6 +83,7 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
 
     }
 
+    /////////////////////////////////////////////////////  VIEWS /////////////////////////////////////////////////////
     private void setupView() {
 
         m_btnClear = findViewById(R.id.btn_clear);
@@ -69,21 +92,17 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
         //TODO: Replace with select from list
         m_imgBtnAdd = findViewById(R.id.img_btn_add);
 
-        m_txtSavedList = findViewById(R.id.txt_saved_list);
-
-        //String deviceList = m_sharedPref.getAll(); TODO: Make dynamic for multiple items for list
-
-        String deviceName = m_sharedPref.getString("device_name", null); // getting String
-        int device_bearing = m_sharedPref.getInt("compass_bearing", 0); // getting Integer
-
-        m_txtSavedList.setText("Saved devices: \n" + deviceName + " " + device_bearing );
     }
+
+    ///////////////////////////////////////////////////// sETUP SENSORS /////////////////////////////////////////////////////
 
     private void setupSensors() {
         m_sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         m_compassSensor = m_sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
 
     }
+
+    /////////////////////////////////////////////////////  SETUP LISTENERS /////////////////////////////////////////////////////
 
     private void setupListeners() {
         m_sensorManager.registerListener(this, m_compassSensor, SensorManager.SENSOR_DELAY_NORMAL);
@@ -106,10 +125,11 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
         m_btnClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getApplicationContext().getSharedPreferences("MyPref", 0).edit().clear().apply();
             }
         });
     }
+
+    ///////////////////////////////////////////////////// INPUT DIALOG /////////////////////////////////////////////////////
 
     protected void showInputDialog() {
 
@@ -124,11 +144,6 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        m_txtSavedList.append("\n" + deviceNameEditText.getText() + " " + m_compassValues + "\n");
-
-                        m_editor.putString("device_name", String.valueOf(deviceNameEditText.getText())); // Storing string
-                        m_editor.putInt("compass_bearing", m_compassValues); // Storing integer
-                        m_editor.commit(); // commit changes
                     }
                 })
                 .setNegativeButton("Cancel",
@@ -143,6 +158,7 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
         alert.show();
     }
 
+    ///////////////////////////////////////////////////// sENSOR EVENTS /////////////////////////////////////////////////////
     @Override
     public void onSensorChanged(SensorEvent event) {
 

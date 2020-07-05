@@ -22,23 +22,23 @@
             android:id="@+id/img_btn_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:src="@android:drawable/ic_input_add" />
 
         <Button
             android:id="@+id/btn_clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="Clear" />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/txt_saved_list"
+    <ListView
+        android:id="@+id/lst_device_bearing"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Saved devices:" />
+        android:layout_weight="1">
+
+    </ListView>
 
     <Button
         android:id="@+id/btn_done"
