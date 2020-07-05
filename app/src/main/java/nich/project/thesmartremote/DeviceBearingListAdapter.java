@@ -33,10 +33,10 @@ class DeviceBearingListAdapter extends ArrayAdapter<Device> {
         int deviceBearing = singleListItem.getBearing();
 
         TextView txtDeviceName = customRow.findViewById(R.id.txt_name);
-        txtDeviceName.setText(deviceName);
+        txtDeviceName.setText(deviceName + "\n" + deviceBearing);
 
-        TextView txtDeviceBearing = customRow.findViewById(R.id.txt_bearing_val);
-        txtDeviceBearing.setText("" + deviceBearing);
+        //TextView txtDeviceBearing = customRow.findViewById(R.id.txt_bearing_val);
+        //txtDeviceBearing.setText("" + deviceBearing);
 
         //ImageView imgView = customRow.findViewById(R.id.img_device);
         //imgView.setImageResource(R.drawable.shitty_device_icon);

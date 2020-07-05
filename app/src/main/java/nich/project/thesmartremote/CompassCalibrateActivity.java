@@ -23,6 +23,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,6 +32,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -46,7 +48,7 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
 
     private ImageButton m_imgBtnAdd;
 
-    private ArrayAdapter<Device> m_adapter;
+    ListAdapter m_adapter;
     ListView m_lstView;
 
     @Override
@@ -70,10 +72,9 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
 
         m_lstView = findViewById(R.id.lst_device_bearing);
 
-        ListAdapter adapter = new
-                DeviceBearingListAdapter(this, deviceListExample);
+        m_adapter = new DeviceBearingListAdapter(this, deviceListExample);
 
-        m_lstView.setAdapter(adapter);
+        m_lstView.setAdapter(m_adapter);
 
         setupView();
 
@@ -94,7 +95,7 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
 
     }
 
-    ///////////////////////////////////////////////////// sETUP SENSORS /////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////// SETUP SENSORS /////////////////////////////////////////////////////
 
     private void setupSensors() {
         m_sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -125,8 +126,33 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
         m_btnClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(CompassCalibrateActivity.this, "Clear List btn pressed", Toast.LENGTH_SHORT).show();
+
             }
         });
+
+        m_lstView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String deviceName = String.valueOf(parent.getItemAtPosition(1));
+
+                Toast.makeText(CompassCalibrateActivity.this, deviceName, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(CompassCalibrateActivity.this, "Device name: " + deviceName + "\n Could start new activity on tap", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        m_lstView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String tapped = String.valueOf(parent.getItemAtPosition(position));
+                Toast.makeText(CompassCalibrateActivity.this, tapped, Toast.LENGTH_SHORT).show();
+
+                return false;
+            }
+        });
+
     }
 
     ///////////////////////////////////////////////////// INPUT DIALOG /////////////////////////////////////////////////////
