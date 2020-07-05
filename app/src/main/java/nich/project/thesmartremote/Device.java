@@ -2,11 +2,11 @@ package nich.project.thesmartremote;
 
 /*
 Some code from:
-
 Dr. Tom Owen: CSC306
 Swansea University
  */
 
+///////////////////////////////////////// OBJECT CLASS FOR SQL DATABASE /////////////////////////////////////////
 public class Device {
 
     // Labels table name
@@ -22,25 +22,23 @@ public class Device {
     public String name;
     public int bearing;
 
+    public Device() {
+    }
+
     public Device(String name, int bearing) {
         this.name = name;
         this.bearing = bearing;
     }
 
-    public String getName() {
-        return name;
-    }
+    public int getDevice_ID() { return device_ID; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setDevice_ID(int device_ID) { this.device_ID = device_ID; }
 
-    public int getBearing() {
-        return bearing;
-    }
+    public String getName() { return name; }
 
-    public void setBearing(int bearing) {
-        this.bearing = bearing;
-    }
+    public void setName(String name) { this.name = name; }
 
+    public int getBearing() { return bearing; }
+
+    public void setBearing(int bearing) { this.bearing = bearing; }
 }
