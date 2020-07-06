@@ -50,6 +50,7 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
 
     ListAdapter m_adapter;
     ListView m_lstView;
+    ArrayList<Device> m_deviceListExample;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,20 +62,7 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
 // Enable the Up button
         ab.setDisplayHomeAsUpEnabled(true);
 
-        ///////////////////////////////////////////////////// EXAMPLE STUFF WILL REMOVE ONCE SQL HAS BEEN SETUP /////////////////////////////////////////////////////
-        Device tv = new Device("Tv", 360);
-        Device light = new Device("Light", 180);
-        Device smartSwitch = new Device("smartSwitch", 90);
-        ArrayList<Device> deviceListExample = new ArrayList<>();
-        deviceListExample.add(tv);
-        deviceListExample.add(light);
-        deviceListExample.add(smartSwitch);
-
-        m_lstView = findViewById(R.id.lst_device_bearing);
-
-        m_adapter = new DeviceBearingListAdapter(this, deviceListExample);
-
-        m_lstView.setAdapter(m_adapter);
+        setupDB();
 
         setupView();
 
@@ -82,6 +70,19 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
 
         setupListeners();
 
+    }
+
+    private void setupDB() {
+        ///////////////////////////////////////////////////// EXAMPLE STUFF WILL REMOVE ONCE SQL HAS BEEN SETUP /////////////////////////////////////////////////////
+        Device tv = new Device("Tv", 360);
+        Device light = new Device("Light", 180);
+        Device smartSwitch = new Device("smartSwitch", 90);
+        m_deviceListExample = new ArrayList<>();
+        m_deviceListExample.add(tv);
+        m_deviceListExample.add(light);
+        m_deviceListExample.add(smartSwitch);
+
+        m_adapter = new DeviceBearingListAdapter(this, m_deviceListExample);
     }
 
     /////////////////////////////////////////////////////  VIEWS /////////////////////////////////////////////////////
@@ -92,6 +93,9 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
 
         //TODO: Replace with select from list
         m_imgBtnAdd = findViewById(R.id.img_btn_add);
+
+        m_lstView = findViewById(R.id.lst_device_bearing);
+        m_lstView.setAdapter(m_adapter);
 
     }
 
@@ -135,9 +139,11 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                String deviceName = String.valueOf(parent.getItemAtPosition(1));
+                Device singleDeviceItem = m_deviceListExample.get(position);
+                String deviceName = singleDeviceItem.getName();
+                int deviceBearing = singleDeviceItem.getBearing();
 
-                Toast.makeText(CompassCalibrateActivity.this, deviceName, Toast.LENGTH_SHORT).show();
+                Toast.makeText(CompassCalibrateActivity.this, deviceName + deviceBearing, Toast.LENGTH_SHORT).show();
                 //Toast.makeText(CompassCalibrateActivity.this, "Device name: " + deviceName + "\n Could start new activity on tap", Toast.LENGTH_SHORT).show();
             }
         });
