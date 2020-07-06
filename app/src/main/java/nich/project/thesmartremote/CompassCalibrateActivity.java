@@ -123,7 +123,8 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
         m_imgBtnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showInputDialog();
+                //showInputDialog();
+                Toast.makeText(CompassCalibrateActivity.this, "Unused", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -142,7 +143,7 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
                 Device singleDeviceItem = m_deviceListExample.get(position);
                 String deviceName = singleDeviceItem.getName();
                 int deviceBearing = singleDeviceItem.getBearing();
-
+                showBearingSavetDialog(deviceName);
                 Toast.makeText(CompassCalibrateActivity.this, deviceName + deviceBearing, Toast.LENGTH_SHORT).show();
                 //Toast.makeText(CompassCalibrateActivity.this, "Device name: " + deviceName + "\n Could start new activity on tap", Toast.LENGTH_SHORT).show();
             }
@@ -161,21 +162,25 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
 
     }
 
-    ///////////////////////////////////////////////////// INPUT DIALOG /////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////// BEARING SAVE DIALOG /////////////////////////////////////////////////////
 
-    protected void showInputDialog() {
+    protected void showBearingSavetDialog(final String deviceName) {
 
         // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(CompassCalibrateActivity.this);
-        View inputDialogueView = layoutInflater.inflate(R.layout.input_dialogue, null);
+        View inputDialogueView = layoutInflater.inflate(R.layout.bearing_save_dialogue, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CompassCalibrateActivity.this);
         alertDialogBuilder.setView(inputDialogueView);
 
-        final EditText deviceNameEditText = inputDialogueView.findViewById(R.id.edit_text_name);
+        TextView txtDeviceName = inputDialogueView.findViewById(R.id.txt_device_name_save_dialogue);
+        txtDeviceName.setText(deviceName);
+
         // setup a dialog window
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        ////Change bearing here
+                        Toast.makeText(CompassCalibrateActivity.this, deviceName + " bearing set to: " + m_compassValues, Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setNegativeButton("Cancel",
@@ -185,7 +190,7 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
                             }
                         });
 
-        // create an alert dialog
+        // create a dialog
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
     }
