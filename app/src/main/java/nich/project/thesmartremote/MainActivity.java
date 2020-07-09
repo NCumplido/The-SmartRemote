@@ -20,6 +20,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -61,8 +62,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 m_YFlickThreshold = 5;
     private float m_orientx,
                     m_orienty,
-                    m_orientz,
-                    m_previousProxValue;
+                    m_orientz;
 
     private String m_SensorsNotProvideByDevice;
 
@@ -72,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         m_sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
