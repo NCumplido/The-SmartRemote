@@ -31,4 +31,7 @@
     <string name="txt_is_complete" />
     <string name="tap_to_begin_then_press_and_hold_while_you_make_your_gesture_flick_up_left_and_right_rotate_clockwise_and_anticlockwise">Tap to begin, then press and hold while you make your gesture. Flick: up, left and right. Rotate: clockwise and anticlockwise.</string>
     <string name="txt_connected_status">Connected</string>
+    <string name="connected_status">Connected status</string>
+    <string name="testerror">TestError</string>
+    <string name="add_device_image">Add device image</string>
 </resources>

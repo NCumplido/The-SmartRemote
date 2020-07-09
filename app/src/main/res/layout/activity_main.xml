@@ -13,7 +13,7 @@
         style="@style/SwanseaBlueTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/txt_connected_status"
+        android:text="@string/connected_status"
         android:textSize="15sp" />
 
     <LinearLayout
@@ -26,14 +26,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:contentDescription="@string/add_device_image"
             app:srcCompat="@android:drawable/ic_input_add" />
-
-        <ImageView
-            android:id="@+id/img_add_two"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@android:drawable/ic_menu_add" />
 
         <ImageView
             android:id="@+id/img_calibrate"
@@ -41,13 +35,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:srcCompat="@android:drawable/ic_menu_compass" />
-
-        <ImageView
-            android:id="@+id/img_q_mark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@android:drawable/ic_menu_help" />
 
         <ImageView
             android:id="@+id/img_spanner"
@@ -68,8 +55,8 @@
         android:id="@+id/btn_test_error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TestError"
-        android:textSize="10dp" />
+        android:text="@string/testerror"
+        android:textSize="12sp" />
 
     <ImageView
         android:id="@+id/img_gesture_performed"
