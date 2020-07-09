@@ -20,7 +20,6 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.graphics.Color.GREEN;
+import static android.view.WindowManager.LayoutParams;
 
 //https://developer.android.com/reference/android/net/wifi/WifiManager
 //https://developer.android.com/training/connect-devices-wirelessly/wifi-direct Create P2P connections with Wi-Fi Direct
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getWindow().addFlags(LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         m_sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         m_imgCalibrate = findViewById(R.id.img_calibrate);
 
-        m_btnTestError = findViewById(R.id.btn_test_error);
+        //m_btnTestError = findViewById(R.id.btn_test_error);
 
     }
 
@@ -182,12 +182,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         });
 
+        /*
         m_btnTestError.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showErrorDialogue();
             }
         });
+        */
     }
 
     /////////////////////////////////////////////////////// ERROR DIALOGUE /////////////////////////////////////////////////

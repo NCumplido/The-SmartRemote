@@ -51,12 +51,14 @@
         android:layout_height="wrap_content"
         android:text="@string/tap_to_begin_then_press_and_hold_while_you_make_your_gesture_flick_up_left_and_right_rotate_clockwise_and_anticlockwise" />
 
+    <!--
     <Button
         android:id="@+id/btn_test_error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/testerror"
         android:textSize="12sp" />
+        -->
 
     <ImageView
         android:id="@+id/img_gesture_performed"
