@@ -94,7 +94,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         m_deviceSensorsList = m_sensorManager.getSensorList(Sensor.TYPE_ALL);
         m_requiredSensorsList = new ArrayList<>();
 
-        m_sensorAccel = m_sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        m_sensorAccel = m_sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+        /*
+        Sensor.TYPE_LINEAR_ACCELERATION
+Software Sensor
+Measure acceleration force applied to device in three axes
+excluding the force of gravity
+         */
         m_sensorGyro = m_sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         m_sensorProxim = m_sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
 
