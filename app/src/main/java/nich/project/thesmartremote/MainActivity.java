@@ -57,8 +57,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private ArrayList<Sensor> m_requiredSensorsList;
 
     private float m_ZFlickThreshold = 10,
-                m_XFlickThreshold = 10,
-                m_YFlickThreshold = 10;
+                m_XFlickThreshold = 5,
+                m_YFlickThreshold = 5;
     private float m_orientx,
                     m_orienty,
                     m_orientz,
@@ -240,14 +240,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     case Sensor.TYPE_LINEAR_ACCELERATION:
 
                         float x = sensorEvent.values[0];
-                        if (x > 15) {
+                        if (x > 5) {
                             m_imgGesturePerformed.setImageResource(R.drawable.shitty_arrow_right);
-                        } else if (x < -15) {
+                        } else if (x < -5) {
                             m_imgGesturePerformed.setImageResource(R.drawable.shitty_arrow_left);
                         }
 
                         float z = sensorEvent.values[2];
-                        if (z > 15) {
+                        if (z > 5) {
                             m_imgGesturePerformed.setImageResource(R.drawable.shitty_arrow_up);
                         }
                         break;
@@ -259,7 +259,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
                         if (m_orientx > 60 && 90 > m_orientx) {
                             m_imgGesturePerformed.setImageResource(R.drawable.clockwise_rotate_arrow);
-                        } else if (m_orientx > 240 && 260 > m_orientx) {
+                        } else if (m_orientx > 260 && 280 > m_orientx) {
                             m_imgGesturePerformed.setImageResource(R.drawable.anticlockwise_arrow_rotate);
                         }
 
