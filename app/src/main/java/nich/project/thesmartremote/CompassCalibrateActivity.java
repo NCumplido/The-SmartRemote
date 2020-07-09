@@ -50,7 +50,7 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
     ListAdapter m_adapter;
     ArrayList<Device> m_deviceList;
 
-    TextView txtDeviceId;
+    TextView txtDeviceId, txtDeviceName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +70,8 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
         setupSensors();
 
         setupListeners();
+
+        loadList();
 
     }
 
@@ -128,27 +130,8 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
             @Override
             public void onClick(View v) {
 
-                DeviceRepo repo = new DeviceRepo(getApplicationContext());
+                loadList();
 
-                ArrayList<HashMap<String, String>> deviceList =  repo.getStudentList();
-                if(deviceList.size()!=0) {
-                    ListView lv = findViewById(R.id.lst_device_bearing);
-                    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-                            txtDeviceId = view.findViewById(R.id.txt_device_id);
-                            String studentId = txtDeviceId.getText().toString();
-                            Intent objIndent = new Intent(getApplicationContext(),DeviceDetail.class);
-                            objIndent.putExtra("device_Id", Integer.parseInt( studentId));
-                            startActivity(objIndent);
-                        }
-                    });
-                    ListAdapter adapter = new SimpleAdapter( CompassCalibrateActivity.this,
-                            deviceList, R.layout.view_device_entry, new String[] { "id","name"}, new int[] {R.id.txt_device_id, R.id.txt_device_name});
-                    lv.setAdapter(adapter);
-                }else{
-                    Toast.makeText(getApplicationContext(),"No student!",Toast.LENGTH_SHORT).show();
-                }
             }
         });
 
@@ -176,6 +159,37 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
             }
         });
         */
+    }
+
+    /////////////////////////////////////////////////////     LOAD LIST       /////////////////////////////////////////////////////
+
+    public void loadList() {
+
+        DeviceRepo repo = new DeviceRepo(getApplicationContext());
+
+        ArrayList<HashMap<String, String>> deviceList =  repo.getStudentList();
+        if(deviceList.size()!=0) {
+            ListView lv = findViewById(R.id.lst_device_bearing);
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+                    txtDeviceId = view.findViewById(R.id.txt_device_id);
+                    String studentId = txtDeviceId.getText().toString();
+                    txtDeviceName = view.findViewById(R.id.txt_device_name);
+                    String deviceName = txtDeviceName.getText().toString();
+                    Intent objIndent = new Intent(getApplicationContext(),DeviceDetail.class);
+                    objIndent.putExtra("device_Id", Integer.parseInt( studentId));
+                    objIndent.putExtra("device_name", deviceName);
+                    startActivity(objIndent);
+                }
+            });
+            ListAdapter adapter = new SimpleAdapter( CompassCalibrateActivity.this,
+                    deviceList, R.layout.view_device_entry, new String[] { "id","name"}, new int[] {R.id.txt_device_id, R.id.txt_device_name});
+            lv.setAdapter(adapter);
+        }else{
+            Toast.makeText(getApplicationContext(),"No student!",Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     ///////////////////////////////////////////////////// BEARING SAVE DIALOG /////////////////////////////////////////////////////

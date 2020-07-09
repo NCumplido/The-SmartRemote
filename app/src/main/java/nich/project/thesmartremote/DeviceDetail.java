@@ -7,6 +7,9 @@ Swansea University
 */
 
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,14 +18,16 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class DeviceDetail extends AppCompatActivity implements View.OnClickListener{
+public class DeviceDetail extends AppCompatActivity implements View.OnClickListener, SensorEventListener {
 
     Button m_btnSave ,
             m_btnDelete,
             m_btnClose;
     EditText m_editTextName;
     EditText m_editTextBearing;
-    private int _Device_Id=0;
+    private int _Device_Id=0,
+            m_compassValues;
+    private String m_deviceName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +45,10 @@ public class DeviceDetail extends AppCompatActivity implements View.OnClickListe
         m_btnDelete.setOnClickListener(this);
         m_btnClose.setOnClickListener(this);
 
-
         _Device_Id =0;
         Intent intent = getIntent();
         _Device_Id =intent.getIntExtra("device_Id", 0);
+        m_deviceName = intent.getStringExtra("device_name");
         DeviceRepo repo = new DeviceRepo(this);
         DeviceDBItem deviceDBItem = new DeviceDBItem();
         deviceDBItem = repo.getDeviceById(_Device_Id);
@@ -63,16 +68,16 @@ public class DeviceDetail extends AppCompatActivity implements View.OnClickListe
             if (_Device_Id == 0){
                 _Device_Id = repo.insert(deviceDBItem);
 
-                Toast.makeText(this,"New Student Insert",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"New device insert",Toast.LENGTH_SHORT).show();
             }else{
 
                 repo.update(deviceDBItem);
-                Toast.makeText(this,"Student Record updated",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"Device record updated",Toast.LENGTH_SHORT).show();
             }
         }else if (view== findViewById(R.id.btn_delete)){
             DeviceRepo repo = new DeviceRepo(this);
             repo.delete(_Device_Id);
-            Toast.makeText(this, "Student Record Deleted", Toast.LENGTH_SHORT);
+            Toast.makeText(this, "Device record deleted", Toast.LENGTH_SHORT);
             finish();
         }else if (view== findViewById(R.id.btn_close)){
             finish();
@@ -81,4 +86,13 @@ public class DeviceDetail extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        m_compassValues = (int) event.values[0];
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
 }
