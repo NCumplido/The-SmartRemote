@@ -7,12 +7,6 @@
     android:orientation="vertical"
     tools:context=".CompassCalibrateActivity">
 
-    <TextView
-        android:id="@+id/txt_instructions"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Point to device and press add to save its bearing" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,6 +17,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@android:drawable/ic_input_add" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
         <Button
             android:id="@+id/btn_clear"
@@ -40,10 +39,27 @@
 
     </ListView>
 
-    <Button
-        android:id="@+id/btn_done"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Done" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Refresh/list all" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btn_done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Done" />
+    </LinearLayout>
 
 </LinearLayout>

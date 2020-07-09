@@ -1,12 +1,12 @@
 package nich.project.thesmartremote;
 
 /*
-Some code from:
+Parts of code from:
 
 Dr. Tom Owen: CSC306
 Dr. Deepak Sahoo: CSCM79
 Swansea University
- */
+*/
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -24,24 +23,24 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.ScrollView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CompassCalibrateActivity extends AppCompatActivity implements SensorEventListener {
 
     private int m_compassValues;
 
     private Button m_btnClear,
-           m_btnDone;
+           m_btnDone,
+           m_btnRefreshList;
 
     private SensorManager m_sensorManager;
     private Sensor m_compassSensor;
@@ -49,8 +48,9 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
     private ImageButton m_imgBtnAdd;
 
     ListAdapter m_adapter;
-    ListView m_lstView;
-    ArrayList<Device> m_deviceListExample;
+    ArrayList<Device> m_deviceList;
+
+    TextView txtDeviceId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +62,8 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
 // Enable the Up button
         ab.setDisplayHomeAsUpEnabled(true);
 
-        setupDB();
+        //m_listView = findViewById(R.id.lst_device_bearing);
+        //m_listView.setAdapter(m_adapter);
 
         setupView();
 
@@ -70,19 +71,6 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
 
         setupListeners();
 
-    }
-
-    private void setupDB() {
-        ///////////////////////////////////////////////////// EXAMPLE STUFF WILL REMOVE ONCE SQL HAS BEEN SETUP /////////////////////////////////////////////////////
-        Device tv = new Device("Tv", 360);
-        Device light = new Device("Light", 180);
-        Device smartSwitch = new Device("smartSwitch", 90);
-        m_deviceListExample = new ArrayList<>();
-        m_deviceListExample.add(tv);
-        m_deviceListExample.add(light);
-        m_deviceListExample.add(smartSwitch);
-
-        m_adapter = new DeviceBearingListAdapter(this, m_deviceListExample);
     }
 
     /////////////////////////////////////////////////////  VIEWS /////////////////////////////////////////////////////
@@ -94,8 +82,7 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
         //TODO: Replace with select from list
         m_imgBtnAdd = findViewById(R.id.img_btn_add);
 
-        m_lstView = findViewById(R.id.lst_device_bearing);
-        m_lstView.setAdapter(m_adapter);
+        m_btnRefreshList = findViewById(R.id.btn_refresh);
 
     }
 
@@ -123,8 +110,9 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
         m_imgBtnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //showInputDialog();
-                Toast.makeText(CompassCalibrateActivity.this, "Unused", Toast.LENGTH_SHORT).show();
+                Intent addDevice = new Intent(getApplicationContext(),DeviceDetail.class);
+                addDevice.putExtra("device_Id",0);
+                startActivity(addDevice);
             }
         });
 
@@ -136,11 +124,39 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
             }
         });
 
-        m_lstView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        m_btnRefreshList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DeviceRepo repo = new DeviceRepo(getApplicationContext());
+
+                ArrayList<HashMap<String, String>> deviceList =  repo.getStudentList();
+                if(deviceList.size()!=0) {
+                    ListView lv = findViewById(R.id.lst_device_bearing);
+                    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+                            txtDeviceId = view.findViewById(R.id.txt_device_id);
+                            String studentId = txtDeviceId.getText().toString();
+                            Intent objIndent = new Intent(getApplicationContext(),DeviceDetail.class);
+                            objIndent.putExtra("device_Id", Integer.parseInt( studentId));
+                            startActivity(objIndent);
+                        }
+                    });
+                    ListAdapter adapter = new SimpleAdapter( CompassCalibrateActivity.this,
+                            deviceList, R.layout.view_device_entry, new String[] { "id","name"}, new int[] {R.id.txt_device_id, R.id.txt_device_name});
+                    lv.setAdapter(adapter);
+                }else{
+                    Toast.makeText(getApplicationContext(),"No student!",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        /*m_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Device singleDeviceItem = m_deviceListExample.get(position);
+                Device singleDeviceItem = m_deviceList.get(position);
                 String deviceName = singleDeviceItem.getName();
                 int deviceBearing = singleDeviceItem.getBearing();
                 showBearingSavetDialog(deviceName);
@@ -149,7 +165,7 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
             }
         });
 
-        m_lstView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        m_listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -159,7 +175,7 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
                 return false;
             }
         });
-
+        */
     }
 
     ///////////////////////////////////////////////////// BEARING SAVE DIALOG /////////////////////////////////////////////////////

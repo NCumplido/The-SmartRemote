@@ -1,12 +1,11 @@
 package nich.project.thesmartremote;
 
 /*
-Some code from:
-Dr. Tom Owen: CSC306
+Parts of code from:
+Dr. Tom Owen: CSC306    TVYM
 Swansea University
- */
+*/
 
-///////////////////////////////////////// OBJECT CLASS FOR SQL DATABASE /////////////////////////////////////////
 public class Device {
 
     // Labels table name
