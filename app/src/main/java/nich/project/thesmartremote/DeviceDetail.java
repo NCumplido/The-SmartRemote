@@ -6,14 +6,17 @@ Dr. Tom Owen: CSC306    TVYM
 Swansea University
 */
 
+import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,10 +27,12 @@ public class DeviceDetail extends AppCompatActivity implements View.OnClickListe
             m_btnDelete,
             m_btnClose;
     EditText m_editTextName;
-    EditText m_editTextBearing;
+    TextView m_txtBearing;
     private int _Device_Id=0,
             m_compassValues;
     private String m_deviceName;
+    Sensor m_compassSensor;
+    SensorManager m_sensorManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +44,7 @@ public class DeviceDetail extends AppCompatActivity implements View.OnClickListe
         m_btnClose = findViewById(R.id.btn_close);
 
         m_editTextName = findViewById(R.id.edit_text_name);
-        m_editTextBearing = findViewById(R.id.edit_text_bearing);
+        m_txtBearing = findViewById(R.id.txt_bearing);
 
         m_btnSave.setOnClickListener(this);
         m_btnDelete.setOnClickListener(this);
@@ -53,15 +58,24 @@ public class DeviceDetail extends AppCompatActivity implements View.OnClickListe
         DeviceDBItem deviceDBItem = new DeviceDBItem();
         deviceDBItem = repo.getDeviceById(_Device_Id);
 
-        m_editTextBearing.setText(String.valueOf(deviceDBItem.bearing));
+        m_txtBearing.setText(String.valueOf(deviceDBItem.bearing));
         m_editTextName.setText(deviceDBItem.name);
+
+        setupSensors();
+    }
+
+    private void setupSensors() {
+
+        m_sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        m_compassSensor = m_sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+        m_sensorManager.registerListener(this, m_compassSensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     public void onClick(View view) {
         if (view == findViewById(R.id.btn_save)){
             DeviceRepo repo = new DeviceRepo(this);
             DeviceDBItem deviceDBItem = new DeviceDBItem();
-            deviceDBItem.bearing = Integer.parseInt(m_editTextBearing.getText().toString());
+            deviceDBItem.bearing = m_compassValues;
             deviceDBItem.name = m_editTextName.getText().toString();
             deviceDBItem.device_ID = _Device_Id;
 
@@ -74,6 +88,9 @@ public class DeviceDetail extends AppCompatActivity implements View.OnClickListe
                 repo.update(deviceDBItem);
                 Toast.makeText(this,"Device record updated",Toast.LENGTH_SHORT).show();
             }
+
+            finish();
+
         }else if (view== findViewById(R.id.btn_delete)){
             DeviceRepo repo = new DeviceRepo(this);
             repo.delete(_Device_Id);
@@ -82,7 +99,6 @@ public class DeviceDetail extends AppCompatActivity implements View.OnClickListe
         }else if (view== findViewById(R.id.btn_close)){
             finish();
         }
-
 
     }
 

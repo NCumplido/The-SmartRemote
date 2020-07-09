@@ -47,9 +47,6 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
 
     private ImageButton m_imgBtnAdd;
 
-    ListAdapter m_adapter;
-    ArrayList<Device> m_deviceList;
-
     TextView txtDeviceId, txtDeviceName;
 
     @Override
@@ -61,9 +58,6 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
         ActionBar ab = getSupportActionBar();
 // Enable the Up button
         ab.setDisplayHomeAsUpEnabled(true);
-
-        //m_listView = findViewById(R.id.lst_device_bearing);
-        //m_listView.setAdapter(m_adapter);
 
         setupView();
 
@@ -121,7 +115,7 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
         m_btnClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(CompassCalibrateActivity.this, "Clear List btn pressed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CompassCalibrateActivity.this, "Could be useful", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -135,30 +129,6 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
             }
         });
 
-        /*m_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Device singleDeviceItem = m_deviceList.get(position);
-                String deviceName = singleDeviceItem.getName();
-                int deviceBearing = singleDeviceItem.getBearing();
-                showBearingSavetDialog(deviceName);
-                Toast.makeText(CompassCalibrateActivity.this, deviceName + deviceBearing, Toast.LENGTH_SHORT).show();
-                //Toast.makeText(CompassCalibrateActivity.this, "Device name: " + deviceName + "\n Could start new activity on tap", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        m_listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-                String tapped = String.valueOf(parent.getItemAtPosition(position));
-                Toast.makeText(CompassCalibrateActivity.this, tapped, Toast.LENGTH_SHORT).show();
-
-                return false;
-            }
-        });
-        */
     }
 
     /////////////////////////////////////////////////////     LOAD LIST       /////////////////////////////////////////////////////
@@ -187,13 +157,13 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
                     deviceList, R.layout.view_device_entry, new String[] { "id","name"}, new int[] {R.id.txt_device_id, R.id.txt_device_name});
             lv.setAdapter(adapter);
         }else{
-            Toast.makeText(getApplicationContext(),"No student!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"No devices!",Toast.LENGTH_SHORT).show();
         }
 
     }
 
     ///////////////////////////////////////////////////// BEARING SAVE DIALOG /////////////////////////////////////////////////////
-
+/*
     protected void showBearingSavetDialog(final String deviceName) {
 
         // get prompts.xml view
@@ -224,17 +194,20 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
     }
+ */
 
-    ///////////////////////////////////////////////////// sENSOR EVENTS /////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////// SENSOR EVENTS /////////////////////////////////////////////////////
     @Override
-    public void onSensorChanged(SensorEvent event) {
-
-        m_compassValues = (int) event.values[0];
-
-    }
+    public void onSensorChanged(SensorEvent event) {        m_compassValues = (int) event.values[0];    }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        loadList();
     }
 }
