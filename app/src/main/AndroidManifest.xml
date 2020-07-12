@@ -27,10 +27,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".CompassCalibrateActivity"
-            android:label="Compass Calibrate"
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
             android:parentActivityName=".MainActivity" />
-
+        <activity android:name=".AddDeviceActivity"
+            android:label="Add device"
+            android:parentActivityName=".MainActivity"/>
+        <activity
+            android:name=".CompassCalibrateActivity"
+            android:label="Locate devices"
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,7 +44,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DeviceDetail"></activity>
+        <activity android:name=".DeviceDetail" />
     </application>
 
 </manifest>

@@ -46,7 +46,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private Button m_btnTestError;
 
     private ImageView m_imgGesturePerformed,
-                        m_imgCalibrate;
+                        m_imgCalibrate,
+                        m_imgAddDevice,
+                        m_imgSetting;
 
     private SensorManager m_sensorManager;
 
@@ -149,7 +151,9 @@ excluding the force of gravity
 
         m_imgCalibrate = findViewById(R.id.img_calibrate);
 
-        //m_btnTestError = findViewById(R.id.btn_test_error);
+        m_imgAddDevice = findViewById(R.id.img_add);
+
+        m_imgSetting = findViewById(R.id.img_spanner);
 
     }
 
@@ -188,14 +192,21 @@ excluding the force of gravity
             }
         });
 
-        /*
-        m_btnTestError.setOnClickListener(new View.OnClickListener() {
+        m_imgAddDevice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showErrorDialogue();
+                Intent addDeviceIntent = new Intent(getApplicationContext(), AddDeviceActivity.class);
+                startActivity(addDeviceIntent);
             }
         });
-        */
+
+        m_imgSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent settingsIntent = new Intent(getApplicationContext(), SettingsActivity.class);
+                startActivity(settingsIntent);
+            }
+        });
     }
 
     /////////////////////////////////////////////////////// ERROR DIALOGUE /////////////////////////////////////////////////
