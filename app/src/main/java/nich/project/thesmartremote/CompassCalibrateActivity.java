@@ -39,8 +39,7 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
     private int m_compassValues;
 
     private Button m_btnClear,
-           m_btnDone,
-           m_btnRefreshList;
+           m_btnDone;
 
     private SensorManager m_sensorManager;
     private Sensor m_compassSensor;
@@ -78,8 +77,6 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
         //TODO: Replace with select from list
         m_imgBtnAdd = findViewById(R.id.img_btn_add);
 
-        m_btnRefreshList = findViewById(R.id.btn_refresh);
-
     }
 
     ///////////////////////////////////////////////////// SETUP SENSORS /////////////////////////////////////////////////////
@@ -116,15 +113,6 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
             @Override
             public void onClick(View v) {
                 Toast.makeText(CompassCalibrateActivity.this, "Could be useful", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-        m_btnRefreshList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                loadList();
 
             }
         });
