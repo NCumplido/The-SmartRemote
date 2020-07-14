@@ -103,6 +103,8 @@ Software Sensor
 Measure acceleration force applied to device in three axes
 excluding the force of gravity
          */
+
+        //TYPE_ORIENTATION has been deprecated
         m_sensorGyro = m_sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         m_sensorProxim = m_sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
 
