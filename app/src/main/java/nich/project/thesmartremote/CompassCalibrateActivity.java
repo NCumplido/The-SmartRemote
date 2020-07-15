@@ -55,7 +55,7 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
 
         // Get a support ActionBar corresponding to this toolbar
         ActionBar ab = getSupportActionBar();
-// Enable the Up button
+        // Enable the Up button
         ab.setDisplayHomeAsUpEnabled(true);
 
         setupView();

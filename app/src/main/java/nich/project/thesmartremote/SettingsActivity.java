@@ -3,7 +3,8 @@ package nich.project.thesmartremote;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,8 +12,8 @@ import androidx.preference.PreferenceFragmentCompat;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    Button m_btnSave,
-            m_btnCancel;
+    TextView m_txtSittingLocationProfile,
+                m_txtabout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,35 +32,29 @@ public class SettingsActivity extends AppCompatActivity {
     //////////////////////////////////////// SETUP VIEW ////////////////////////////////////////
     private void setupView() {
 
-        m_btnSave  =findViewById(R.id.btn_save);
-        m_btnCancel = findViewById(R.id.btn_cancel);
+        m_txtSittingLocationProfile = findViewById(R.id.txt_sitting_location_profiles);
+        m_txtabout = findViewById(R.id.txt_about);
 
     }
 
     //////////////////////////////////////// SETUP LISTENERS ///////////////////////////////////
     private void setupListeners() {
 
-        m_btnSave.setOnClickListener(new View.OnClickListener() {
+        m_txtSittingLocationProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveSettings();
+                Intent sittingLocationProfilesIntent = new Intent(getApplicationContext(), SittingLocationProfilesActivity.class);
+                startActivity(sittingLocationProfilesIntent);
             }
         });
 
-        m_btnCancel.setOnClickListener(new View.OnClickListener() {
+        m_txtabout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mainActivityIntent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(mainActivityIntent);
+                Intent aboutIntent = new Intent(getApplicationContext(), AboutActivity.class);
+                startActivity(aboutIntent);
             }
         });
-
-    }
-    //////////////////////////////////////// SAVE SETTINGS ////////////////////////////////////
-    public void saveSettings(){
-
-        Intent mainActivityIntent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(mainActivityIntent);
 
     }
 
