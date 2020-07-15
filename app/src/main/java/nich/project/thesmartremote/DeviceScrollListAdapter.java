@@ -8,16 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
-
-import static android.graphics.Color.GREEN;
-import static android.graphics.Color.RED;
 
 class DeviceScrollListAdapter extends ArrayAdapter<String> {
 
@@ -44,7 +40,7 @@ class DeviceScrollListAdapter extends ArrayAdapter<String> {
         String singleDeviceName = getItem(position);
 
         TextView txtDeviceName = customDeviceView.findViewById(R.id.txt_name);
-        TextView txtDeviceRoom = customDeviceView.findViewById(R.id.txt_room);
+        //TextView txtDeviceRoom = customDeviceView.findViewById(R.id.txt_room);
 
         txtDeviceName.setText(singleDeviceName);
         //TODO: txtDeviceRoom.setText();

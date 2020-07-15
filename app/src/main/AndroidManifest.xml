@@ -26,13 +26,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ManageLocationProfilesActivity"
+            android:label="Manage Location Profiles"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ManageGesturesActivity"
+            android:label="Manage Gestures"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ManageDevicesActivity"
+            android:label="Manage Devices"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".AboutActivity"
             android:label="About"
-            android:parentActivityName=".SettingsActivity"/>
-        <activity
-            android:name=".SittingLocationProfilesActivity"
-            android:label="Sitting Location profiles"
             android:parentActivityName=".SettingsActivity" />
         <activity
             android:name=".SettingsActivity"

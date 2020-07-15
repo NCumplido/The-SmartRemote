@@ -23,7 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class DeviceDetail extends AppCompatActivity implements View.OnClickListener, SensorEventListener {
 
-    Button m_btnSave ,
+    Button m_btnSave,
             m_btnDelete,
             m_btnClose;
     EditText m_editTextName;
@@ -94,7 +94,7 @@ public class DeviceDetail extends AppCompatActivity implements View.OnClickListe
         }else if (view== findViewById(R.id.btn_delete)){
             DeviceRepo repo = new DeviceRepo(this);
             repo.delete(_Device_Id);
-            Toast.makeText(this, "Device record deleted", Toast.LENGTH_SHORT);
+            Toast.makeText(this, "Device record deleted", Toast.LENGTH_SHORT).show();
             finish();
         }else if (view== findViewById(R.id.btn_close)){
             finish();

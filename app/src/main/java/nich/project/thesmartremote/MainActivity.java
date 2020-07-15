@@ -20,7 +20,6 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -41,30 +40,16 @@ import static android.view.WindowManager.LayoutParams;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener { //This new comment of mine
 
-    private TextView m_txtWifiStatus;
-
-    private Button m_btnTestError;
-
-    private ImageView m_imgGesturePerformed,
-                        m_imgCalibrate,
-                        m_imgAddDevice,
-                        m_imgSetting;
+    private ImageView   m_imgGesturePerformed,
+                        m_imgLocations,
+                        m_imgDevices,
+                        m_imgGestures;
+//                        
 
     private SensorManager m_sensorManager;
 
-    private Sensor m_sensorAccel,
-            m_sensorGyro,
-            m_sensorProxim;
-
-    private List<Sensor> m_deviceSensorsList;
-    private ArrayList<Sensor> m_requiredSensorsList;
-
-    private float m_ZFlickThreshold = 10,
-                m_XFlickThreshold = 5,
-                m_YFlickThreshold = 5;
-    private float m_orientx,
-                    m_orienty,
-                    m_orientz;
+    private Sensor m_sensorAccelerometer;
+    private Sensor m_sensorProximity;
 
     private String m_SensorsNotProvideByDevice;
 
@@ -81,6 +66,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         deviceHasSensors();
 
+        //setupWiFi();
+
         setupView();
 
         setupListeners();
@@ -93,10 +80,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     //Return if required sensor is unavailable, give notification and limit functions/features
     private void deviceHasSensors() {
 
-        m_deviceSensorsList = m_sensorManager.getSensorList(Sensor.TYPE_ALL);
-        m_requiredSensorsList = new ArrayList<>();
+        List<Sensor> m_deviceSensorsList = m_sensorManager.getSensorList(Sensor.TYPE_ALL);
+        ArrayList<Sensor> m_requiredSensorsList = new ArrayList<>();
 
-        m_sensorAccel = m_sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+        m_sensorAccelerometer = m_sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         /*
         Sensor.TYPE_LINEAR_ACCELERATION
 Software Sensor
@@ -105,31 +92,21 @@ excluding the force of gravity
          */
 
         //TYPE_ORIENTATION has been deprecated
-        m_sensorGyro = m_sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-        m_sensorProxim = m_sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+        Sensor m_sensorGyro = m_sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        m_sensorProximity = m_sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
 
-        m_requiredSensorsList.add(m_sensorAccel);
+        m_requiredSensorsList.add(m_sensorAccelerometer);
         m_requiredSensorsList.add(m_sensorGyro);
-        m_requiredSensorsList.add(m_sensorProxim);
+        m_requiredSensorsList.add(m_sensorProximity);
 
 
-        if (m_deviceSensorsList.contains(m_sensorAccel)) {
-            //Toast.makeText(getApplicationContext(),"m_sensorAccel",Toast.LENGTH_SHORT).show();
+        if (!m_deviceSensorsList.contains(m_sensorAccelerometer)) {
+            m_SensorsNotProvideByDevice += " Accelerometer";
         }
-        else
-        {m_SensorsNotProvideByDevice += " Accelerometer";}
 
-        if (m_deviceSensorsList.contains(m_sensorGyro)) {
-            //Toast.makeText(getApplicationContext(),"m_sensorGyro",Toast.LENGTH_SHORT).show();
-        }
-        else
-        {m_SensorsNotProvideByDevice += " Gyroscope";}
+        if (!m_deviceSensorsList.contains(m_sensorGyro)) {m_SensorsNotProvideByDevice += " Gyroscope";}
 
-        if (m_deviceSensorsList.contains(m_sensorProxim)) {
-            //Toast.makeText(getApplicationContext(),"m_sensorGyro",Toast.LENGTH_SHORT).show();
-        }
-        else
-        {m_SensorsNotProvideByDevice += " Proximity";}
+        if (!m_deviceSensorsList.contains(m_sensorProximity)) {m_SensorsNotProvideByDevice += " Proximity";}
 
         if(m_SensorsNotProvideByDevice != null){
             openErrorDialogue(m_SensorsNotProvideByDevice);
@@ -145,18 +122,17 @@ excluding the force of gravity
 
     private void setupView() {
 
-        m_txtWifiStatus = findViewById(R.id.txt_connect_status);
+        TextView m_txtWifiStatus = findViewById(R.id.txt_connect_status);
         m_txtWifiStatus.setTypeface(m_txtWifiStatus.getTypeface(), Typeface.ITALIC);
         m_txtWifiStatus.setTextColor(GREEN);
 
         m_imgGesturePerformed = findViewById(R.id.img_gesture_performed);
 
-        m_imgCalibrate = findViewById(R.id.img_calibrate);
+        m_imgLocations = findViewById(R.id.img_locations);
 
-        m_imgAddDevice = findViewById(R.id.img_add);
+        m_imgDevices = findViewById(R.id.img_devices);
 
-        m_imgSetting = findViewById(R.id.img_spanner);
-
+        m_imgGestures = findViewById(R.id.img_gestures);
     }
 
     /////////////////////////////////////////////////////// LISTENERS ///////////////////////////////////////////////////////
@@ -164,13 +140,13 @@ excluding the force of gravity
     private void setupListeners() {
 
         //linear acceleration = acceleration - acceleration due to gravity
-        m_sensorAccel = m_sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
-        m_sensorManager.registerListener(this, m_sensorAccel, SensorManager.SENSOR_DELAY_NORMAL);
-        m_sensorManager.registerListener(this, m_sensorProxim, SensorManager.SENSOR_DELAY_NORMAL);
+        m_sensorAccelerometer = m_sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+        m_sensorManager.registerListener(this, m_sensorAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        m_sensorManager.registerListener(this, m_sensorProximity, SensorManager.SENSOR_DELAY_NORMAL);
 
         m_sensorManager.registerListener(this,
                 m_sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
-                m_sensorManager.SENSOR_DELAY_GAME);
+                SensorManager.SENSOR_DELAY_GAME);
 
         m_imgGesturePerformed.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,27 +162,36 @@ excluding the force of gravity
             }
         });
 
-        m_imgCalibrate.setOnClickListener(new View.OnClickListener() {
+        m_imgLocations.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent manageLocationProfilesIntent = new Intent(getApplicationContext(), ManageLocationProfilesActivity.class);
+                startActivity(manageLocationProfilesIntent);
+            }
+        });
+
+        m_imgLocations.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
                 Intent CompassCalibrateintent = new Intent(getApplicationContext(), CompassCalibrateActivity.class);
                 startActivity(CompassCalibrateintent);
+                return false;
             }
         });
 
-        m_imgAddDevice.setOnClickListener(new View.OnClickListener() {
+        m_imgDevices.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent addDeviceIntent = new Intent(getApplicationContext(), AddDeviceActivity.class);
-                startActivity(addDeviceIntent);
+                Intent manageDevicesIntent = new Intent(getApplicationContext(), ManageDevicesActivity.class);
+                startActivity(manageDevicesIntent);
             }
         });
 
-        m_imgSetting.setOnClickListener(new View.OnClickListener() {
+        m_imgGestures.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent settingsIntent = new Intent(getApplicationContext(), SettingsActivity.class);
-                startActivity(settingsIntent);
+                Intent manageGesturesIntent = new Intent(getApplicationContext(), ManageGesturesActivity.class);
+                startActivity(manageGesturesIntent);
             }
         });
     }
@@ -276,9 +261,9 @@ excluding the force of gravity
                         break;
 
                     case Sensor.TYPE_ORIENTATION:
-                        m_orientx = sensorEvent.values[0];
-                        m_orienty = sensorEvent.values[1];
-                        m_orientz = sensorEvent.values[2];
+                        float m_orientx = sensorEvent.values[0];
+                        float m_orienty = sensorEvent.values[1];
+                        float m_orientz = sensorEvent.values[2];
 
                         if (m_orientx > 60 && 90 > m_orientx) {
                             m_imgGesturePerformed.setImageResource(R.drawable.clockwise_rotate_arrow);
@@ -301,7 +286,7 @@ excluding the force of gravity
 //    @Override
 //    protected void onResume() {
 //        super.onResume();
-//       m_sensorManager.registerListener(this, m_sensorAccel, SensorManager.SENSOR_DELAY_NORMAL);
+//       m_sensorManager.registerListener(this, m_sensorAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 //        m_sensorManager.registerListener(this, m_sensorGyro, SensorManager.SENSOR_DELAY_NORMAL);
 //
 //    }
