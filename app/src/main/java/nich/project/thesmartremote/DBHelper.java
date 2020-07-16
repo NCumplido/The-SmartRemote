@@ -14,7 +14,7 @@ public class DBHelper  extends SQLiteOpenHelper {
     //version number to upgrade database version
     //each time if you Add, Edit table, you need to change the
     //version number.
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     // Database Name
     private static final String DATABASE_NAME = "application.db";
@@ -33,13 +33,19 @@ public class DBHelper  extends SQLiteOpenHelper {
 
         db.execSQL(CREATE_TABLE_DEVICE);
 
+        String CREATE_TABLE_LOCATION_PROFILES = "CREATE TABLE " + LocationProfileDBItem.TABLE  + "("
+                + LocationProfileDBItem.KEY_ID  + " INTEGER PRIMARY KEY AUTOINCREMENT ,"
+                + LocationProfileDBItem.KEY_name + " TEXT )";
+
+        db.execSQL(CREATE_TABLE_LOCATION_PROFILES);
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed, all data will be gone!!!
         db.execSQL("DROP TABLE IF EXISTS " + DeviceDBItem.TABLE);
-
+        db.execSQL("DROP TABLE IF EXISTS " + LocationProfileDBItem.TABLE);
         // Create tables again
         onCreate(db);
 

@@ -26,7 +26,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ManageLocationProfilesActivity"
+        <activity android:name=".LocationProfileDetail"
+            android:label="Location Profile Detail"
+            android:parentActivityName=".ManageLocationProfilesActivity" />
+        <activity
+            android:name=".ManageLocationProfilesActivity"
             android:label="Manage Location Profiles"
             android:parentActivityName=".MainActivity" />
         <activity
@@ -60,7 +64,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DeviceDetail" />
+        <activity android:name=".DeviceDetail"
+            android:label="Device Detail"
+            android:parentActivityName=".ManageDevicesActivity" />
     </application>
 
 </manifest>

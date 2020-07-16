@@ -25,8 +25,7 @@ public class ManageDevicesActivity extends AppCompatActivity {
     private ImageButton m_imgBtnAdd;
 
     TextView txtDeviceId, 
-            txtDeviceName,
-            txtDeviceLocation;
+            txtDeviceName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
