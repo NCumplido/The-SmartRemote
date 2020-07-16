@@ -39,6 +39,13 @@ public class ManageDevicesActivity extends AppCompatActivity {
     }
 
     private void setupView() {
+
+        m_btnClear = findViewById(R.id.btn_clear_device_list);
+        m_btnDone = findViewById(R.id.btn_done);
+
+        //TODO: Replace with select from list
+        m_imgBtnAdd = findViewById(R.id.img_btn_add_device);
+
     }
 
     private void setupListeners() {
