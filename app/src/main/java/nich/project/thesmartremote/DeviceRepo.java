@@ -10,6 +10,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -25,7 +26,6 @@ public class DeviceRepo {
         //Open connection to write data
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(DeviceDBItem.KEY_bearing, deviceDBItem.bearing);
         values.put(DeviceDBItem.KEY_name, deviceDBItem.name);
 
         // Inserting Row
@@ -47,7 +47,6 @@ public class DeviceRepo {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(DeviceDBItem.KEY_bearing, deviceDBItem.bearing);
         values.put(DeviceDBItem.KEY_name, deviceDBItem.name);
 
         // It's a good practice to use parameter ?, instead of concatenate string
@@ -55,17 +54,16 @@ public class DeviceRepo {
         db.close(); // Closing database connection
     }
 
-    public ArrayList<HashMap<String, String>>  getStudentList() {
+    public ArrayList<HashMap<String, String>>  getDeviceList() {
         //Open connection to read only
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String selectQuery =  "SELECT  " +
                 DeviceDBItem.KEY_ID + "," +
-                DeviceDBItem.KEY_name + "," +
-                DeviceDBItem.KEY_bearing +
+                DeviceDBItem.KEY_name +
                 " FROM " + DeviceDBItem.TABLE;
 
         //Student student = new Student();
-        ArrayList<HashMap<String, String>> studentList = new ArrayList<>();
+        ArrayList<HashMap<String, String>> deviceList = new ArrayList<>();
 
         Cursor cursor = db.rawQuery(selectQuery, null);
         // looping through all rows and adding to list
@@ -75,14 +73,14 @@ public class DeviceRepo {
                 HashMap<String, String> device = new HashMap<>();
                 device.put("id", cursor.getString(cursor.getColumnIndex(DeviceDBItem.KEY_ID)));
                 device.put("name", cursor.getString(cursor.getColumnIndex(DeviceDBItem.KEY_name)));
-                studentList.add(device);
+                deviceList.add(device);
 
             } while (cursor.moveToNext());
         }
 
         cursor.close();
         db.close();
-        return studentList;
+        return deviceList;
 
     }
 
@@ -90,8 +88,7 @@ public class DeviceRepo {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String selectQuery =  "SELECT  " +
                 DeviceDBItem.KEY_ID + "," +
-                DeviceDBItem.KEY_name + "," +
-                DeviceDBItem.KEY_bearing +
+                DeviceDBItem.KEY_name +
                 " FROM " + DeviceDBItem.TABLE
                 + " WHERE " +
                 DeviceDBItem.KEY_ID + "=?";// It's a good practice to use parameter ?, instead of concatenate string
@@ -105,7 +102,6 @@ public class DeviceRepo {
             do {
                 deviceDBItem.device_ID =cursor.getInt(cursor.getColumnIndex(DeviceDBItem.KEY_ID));
                 deviceDBItem.name =cursor.getString(cursor.getColumnIndex(DeviceDBItem.KEY_name));
-                deviceDBItem.bearing =cursor.getInt(cursor.getColumnIndex(DeviceDBItem.KEY_bearing));
 
             } while (cursor.moveToNext());
         }

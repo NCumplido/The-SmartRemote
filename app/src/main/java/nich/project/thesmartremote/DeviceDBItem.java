@@ -14,10 +14,8 @@ public class DeviceDBItem {
     // Labels Table Columns names
     public static final String KEY_ID = "id";
     public static final String KEY_name = "name";
-    public static final String KEY_bearing = "bearing";
 
     // property help us to keep data
     public int device_ID;
     public String name;
-    public int bearing;
 }

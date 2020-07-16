@@ -13,7 +13,7 @@
         android:id="@+id/txt_device_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="6dip"
+        android:paddingStart="6dip"
         android:paddingTop="6dip"
         android:textSize="22sp"
         android:textStyle="bold" />

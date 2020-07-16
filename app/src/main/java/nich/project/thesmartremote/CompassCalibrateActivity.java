@@ -8,9 +8,6 @@ Dr. Deepak Sahoo: CSCM79
 Swansea University
 */
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
@@ -27,6 +24,9 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -122,7 +122,7 @@ public class CompassCalibrateActivity extends AppCompatActivity implements Senso
 
         DeviceRepo repo = new DeviceRepo(getApplicationContext());
 
-        ArrayList<HashMap<String, String>> deviceList =  repo.getStudentList();
+        ArrayList<HashMap<String, String>> deviceList =  repo.getDeviceList();
         if(deviceList.size()!=0) {
             ListView lv = findViewById(R.id.lst_device_bearing);
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -14,10 +14,10 @@ public class DBHelper  extends SQLiteOpenHelper {
     //version number to upgrade database version
     //each time if you Add, Edit table, you need to change the
     //version number.
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // Database Name
-    private static final String DATABASE_NAME = "devices.db";
+    private static final String DATABASE_NAME = "application.db";
 
     public DBHelper(Context context ) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -29,8 +29,7 @@ public class DBHelper  extends SQLiteOpenHelper {
 
         String CREATE_TABLE_DEVICE = "CREATE TABLE " + DeviceDBItem.TABLE  + "("
                 + DeviceDBItem.KEY_ID  + " INTEGER PRIMARY KEY AUTOINCREMENT ,"
-                + DeviceDBItem.KEY_name + " TEXT, "
-                + DeviceDBItem.KEY_bearing + " INTEGER )";
+                + DeviceDBItem.KEY_name + " TEXT )";
 
         db.execSQL(CREATE_TABLE_DEVICE);
 
