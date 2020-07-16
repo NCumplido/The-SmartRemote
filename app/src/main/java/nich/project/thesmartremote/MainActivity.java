@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         m_imgLocations,
                         m_imgDevices,
                         m_imgGestures;
-//                        
 
     private SensorManager m_sensorManager;
 

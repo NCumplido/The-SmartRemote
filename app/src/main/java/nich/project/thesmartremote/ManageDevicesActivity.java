@@ -3,9 +3,23 @@ package nich.project.thesmartremote;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 public class ManageDevicesActivity extends AppCompatActivity {
+
+    private Button m_btnClear,
+            m_btnDone;
+
+    private ImageButton m_imgBtnAdd;
+
+    TextView txtDeviceId, 
+            txtDeviceName,
+            txtDeviceLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,5 +31,26 @@ public class ManageDevicesActivity extends AppCompatActivity {
         // Enable the Up button
         ab.setDisplayHomeAsUpEnabled(true);
 
+        setupView();
+
+        setupListeners();
+
+        loadList();
     }
+
+    private void setupView() {
+    }
+
+    private void setupListeners() {
+    }
+
+    private void loadList() {
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        loadList();
+    }
+
 }
