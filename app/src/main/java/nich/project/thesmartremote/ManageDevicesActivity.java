@@ -101,7 +101,6 @@ public class ManageDevicesActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"No devices!",Toast.LENGTH_SHORT).show();
         }
 
-
     }
 
     @Override

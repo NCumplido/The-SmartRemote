@@ -1,23 +1,41 @@
 package nich.project.thesmartremote;
 
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class LocationProfileDetail extends AppCompatActivity implements View.OnClickListener{
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class LocationProfileDetail extends AppCompatActivity implements SensorEventListener, View.OnClickListener{
 
     Button m_btnSave,
             m_btnDelete,
             m_btnClose;
     EditText m_editTextName;
-    private int _LocationProfile_Id=0;
+    private int _LocationProfile_Id=0,
+            _Pivot_Id=0,
+            m_compassValues;
+
     private String m_locationProfileName;
+
+    private SensorManager m_sensorManager;
+    private Sensor m_compassSensor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +64,25 @@ public class LocationProfileDetail extends AppCompatActivity implements View.OnC
         LocationProfileDBItem locationProfileDBItem = new LocationProfileDBItem();
         locationProfileDBItem = repo.getLocationProfileById(_LocationProfile_Id);
 
+        _Pivot_Id =0;
+        PivotRepo pivotRepo = new PivotRepo(this);
+        PivotDeviceProfileDBItem pivotDeviceProfileDBItem = new PivotDeviceProfileDBItem();
+        pivotDeviceProfileDBItem = pivotRepo.getPivotById(_Pivot_Id);
+
         m_editTextName.setText(locationProfileDBItem.name);
+
+        setupSensors();
+        loadList();
+
+    }
+
+    ///////////////////////////////////////////////////// SETUP SENSORS /////////////////////////////////////////////////////
+
+    private void setupSensors() {
+        m_sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        m_compassSensor = m_sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+
+        m_sensorManager.registerListener(this, m_compassSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
     }
 
@@ -78,5 +114,75 @@ public class LocationProfileDetail extends AppCompatActivity implements View.OnC
             finish();
         }
 
+    }
+
+    private void loadList() {
+
+        DeviceRepo repo = new DeviceRepo(getApplicationContext());
+
+        ArrayList<HashMap<String, String>> deviceList =  repo.getDeviceList();
+        if(deviceList.size()!=0) {
+            ListView lv = findViewById(R.id.lst_devices_in_profile_detail);
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+                    //txtDeviceId = view.findViewById(R.id.txt_device_id);
+                    //String deviceId = txtDeviceId.getText().toString();
+                    //txtDeviceName = view.findViewById(R.id.txt_device_name);
+                    //String deviceName = txtDeviceName.getText().toString();
+                    Intent objIndent = new Intent(getApplicationContext(),DeviceDetail.class);
+                    //objIndent.putExtra("device_Id", Integer.parseInt( studentId));
+                    //objIndent.putExtra("device_name", deviceName);
+                    startActivity(objIndent);
+                    //Save device bearing here
+                    saveBearing();
+                }
+            });
+            ListAdapter adapter = new SimpleAdapter( LocationProfileDetail.this,
+                    deviceList, R.layout.view_device_entry, new String[] { "id","name"}, new int[] {R.id.txt_device_id, R.id.txt_device_name});
+            lv.setAdapter(adapter);
+        }else{
+            Toast.makeText(getApplicationContext(),"No devices!",Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    public void saveBearing(){
+        PivotRepo repo = new PivotRepo(this);
+        PivotDeviceProfileDBItem pivotDeviceProfileDBItem = new PivotDeviceProfileDBItem();
+        //pivotDeviceProfileDBItem.pivot_ID = pivot;
+        //pivotDeviceProfileDBItem.device_ID = m_editTextName.getText().toString();
+        pivotDeviceProfileDBItem.deviceName = m_editTextName.getText().toString();
+
+        //pivotDeviceProfileDBItem.profile_ID = m_editTextName.getText().toString();
+        pivotDeviceProfileDBItem.profileName = m_editTextName.getText().toString();
+
+        if (_LocationProfile_Id == 0){
+            _LocationProfile_Id = repo.insert(pivotDeviceProfileDBItem);
+
+            Toast.makeText(this,"New pivotDeviceProfile insert",Toast.LENGTH_SHORT).show();
+        }else{
+
+            repo.update(pivotDeviceProfileDBItem);
+            Toast.makeText(this,"PivotDeviceProfile record updated",Toast.LENGTH_SHORT).show();
+        }
+
+        finish();
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        m_compassValues = (int) event.values[0];
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        loadList();
     }
 }

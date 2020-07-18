@@ -27,9 +27,17 @@
             android:inputType="textPersonName" />
     </LinearLayout>
 
+    <ListView
+        android:id="@+id/lst_devices_in_profile_detail"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    </ListView>
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="bottom"
         android:orientation="horizontal">
 

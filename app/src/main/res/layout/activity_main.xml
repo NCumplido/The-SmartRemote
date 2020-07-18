@@ -64,10 +64,34 @@
         android:layout_height="wrap_content"
         android:text="No location set" />
 
-    <ImageView
-        android:id="@+id/img_gesture_performed"
+    <ImageButton
+        android:id="@+id/imgbtn_listen_gesture"
         android:layout_width="match_parent"
-        android:layout_height="678dp"
+        android:layout_height="wrap_content"
         app:srcCompat="@android:drawable/ic_menu_always_landscape_portrait" />
+
+    <TextView
+        android:id="@+id/txt_rotation_x"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/txt_rotation_y"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/txt_rotation_z"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <!--    <ImageView-->
+<!--        android:id="@+id/img_gesture_performed"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="678dp"-->
+<!--        app:srcCompat="@android:drawable/ic_menu_always_landscape_portrait" />-->
 
 </LinearLayout>
