@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
@@ -27,7 +28,14 @@ public class LocationProfileDetail extends AppCompatActivity implements SensorEv
     Button m_btnSave,
             m_btnDelete,
             m_btnClose;
+
     EditText m_editTextName;
+
+    TextView txtDeviceId,
+            txtDeviceName,
+            txtProfileId,
+            txtprofileName;
+
     private int _LocationProfile_Id=0,
             _Pivot_Id=0,
             m_compassValues;
@@ -77,7 +85,6 @@ public class LocationProfileDetail extends AppCompatActivity implements SensorEv
     }
 
     ///////////////////////////////////////////////////// SETUP SENSORS /////////////////////////////////////////////////////
-
     private void setupSensors() {
         m_sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         m_compassSensor = m_sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
@@ -86,6 +93,7 @@ public class LocationProfileDetail extends AppCompatActivity implements SensorEv
 
     }
 
+    ///////////////////////////////////////////////////// SETUP LISTENERS ///////////////////////////////////////////////////
     public void onClick(View view) {
         if (view == findViewById(R.id.btn_save_location_profile)){
             LocationProfileRepo repo = new LocationProfileRepo(this);
@@ -116,6 +124,7 @@ public class LocationProfileDetail extends AppCompatActivity implements SensorEv
 
     }
 
+    ///////////////////////////////////////////////////// LOAD LIST /////////////////////////////////////////////////////
     private void loadList() {
 
         DeviceRepo repo = new DeviceRepo(getApplicationContext());
@@ -126,16 +135,17 @@ public class LocationProfileDetail extends AppCompatActivity implements SensorEv
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-                    //txtDeviceId = view.findViewById(R.id.txt_device_id);
-                    //String deviceId = txtDeviceId.getText().toString();
-                    //txtDeviceName = view.findViewById(R.id.txt_device_name);
-                    //String deviceName = txtDeviceName.getText().toString();
-                    Intent objIndent = new Intent(getApplicationContext(),DeviceDetail.class);
-                    //objIndent.putExtra("device_Id", Integer.parseInt( studentId));
+                    txtDeviceId = view.findViewById(R.id.txt_device_id);
+                    String deviceId = txtDeviceId.getText().toString();
+                    txtDeviceName = view.findViewById(R.id.txt_device_name);
+                    String deviceName = txtDeviceName.getText().toString();
+                    //Intent objIndent = new Intent(getApplicationContext(),DeviceDetail.class);
+                    //objIndent.putExtra("device_Id", Integer.parseInt( deviceId));
                     //objIndent.putExtra("device_name", deviceName);
-                    startActivity(objIndent);
-                    //Save device bearing here
-                    saveBearing();
+                    //startActivity(objIndent);
+
+                    saveBearing(deviceId, deviceName);
+
                 }
             });
             ListAdapter adapter = new SimpleAdapter( LocationProfileDetail.this,
@@ -147,27 +157,35 @@ public class LocationProfileDetail extends AppCompatActivity implements SensorEv
 
     }
 
-    public void saveBearing(){
+    ///////////////////////////////////////////////////// SAVE BEARING /////////////////////////////////////////////////////
+    public void saveBearing( String deviceId, String deviceName){
+
         PivotRepo repo = new PivotRepo(this);
-        PivotDeviceProfileDBItem pivotDeviceProfileDBItem = new PivotDeviceProfileDBItem();
-        //pivotDeviceProfileDBItem.pivot_ID = pivot;
-        //pivotDeviceProfileDBItem.device_ID = m_editTextName.getText().toString();
-        pivotDeviceProfileDBItem.deviceName = m_editTextName.getText().toString();
+        PivotDeviceProfileDBItem pivotDBItem = new PivotDeviceProfileDBItem();
 
-        //pivotDeviceProfileDBItem.profile_ID = m_editTextName.getText().toString();
-        pivotDeviceProfileDBItem.profileName = m_editTextName.getText().toString();
+        pivotDBItem.pivot_ID = _Pivot_Id;
+        pivotDBItem.device_ID = Integer.parseInt(deviceId);
+        pivotDBItem.profile_ID = _LocationProfile_Id;
 
-        if (_LocationProfile_Id == 0){
-            _LocationProfile_Id = repo.insert(pivotDeviceProfileDBItem);
+        pivotDBItem.deviceName = deviceName;
+        pivotDBItem.profileName = m_editTextName.getText().toString();
 
-            Toast.makeText(this,"New pivotDeviceProfile insert",Toast.LENGTH_SHORT).show();
+        pivotDBItem.bearing = m_compassValues;
+
+        if (_Pivot_Id == 0){
+            _Pivot_Id = repo.insert(pivotDBItem);
+
+            Toast.makeText(this,"New Pivot insert",Toast.LENGTH_SHORT).show();
         }else{
 
-            repo.update(pivotDeviceProfileDBItem);
-            Toast.makeText(this,"PivotDeviceProfile record updated",Toast.LENGTH_SHORT).show();
+            repo.update(pivotDBItem);
+            Toast.makeText(this,"Pivot record updated",Toast.LENGTH_SHORT).show();
         }
 
         finish();
+
+        Toast.makeText(this, "Saved bearing: " + m_compassValues + pivotDBItem.device_ID, Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
