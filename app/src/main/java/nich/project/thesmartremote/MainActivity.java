@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     ///////////////////////////// VIBRATION /////////////////////////////
     private Vibrator m_vibrator;
-    private long[] m_pattern = {1000, 2000, 4000, 8000, 16000 };
+    private long[] m_pattern = {100, 100, 100, 10 };
     private String m_vibratorService;
 
     private String m_SensorsNotProvideByDevice;
@@ -322,16 +322,23 @@ excluding the force of gravity
                         if(rotationX < 0.1 && rotationY > 0.3){
                             Toast.makeText(getApplicationContext(),"Tilt right", Toast.LENGTH_SHORT).show();
 
-                            m_vibrator.vibrate(m_pattern, 0);
+                            //m_vibrator.vibrate(m_pattern, -1);
 // Execute vibration pattern.
-                            m_vibrator.vibrate(100); // Vibrate for 1 second.
+                            m_vibrator.vibrate(1);
                         }
                         if(rotationX < 0.1 && rotationY < -0.3) {
                             Toast.makeText(getApplicationContext(),"Tilt left", Toast.LENGTH_SHORT).show();
 
-                            m_vibrator.vibrate(m_pattern, 1);
+                            m_vibrator.vibrate(m_pattern, -1);
 // Execute vibration pattern.
                             m_vibrator.vibrate(100); // Vibrate for 1 second.
+                        }
+                        if(rotationX < -0.3) {
+                            Toast.makeText(getApplicationContext(),"Tilt forward", Toast.LENGTH_SHORT).show();
+
+                            m_vibrator.vibrate(m_pattern, -1);
+// Execute vibration pattern.
+                            //m_vibrator.vibrate(100); // Vibrate for 1 second.
                         }
 
                 }

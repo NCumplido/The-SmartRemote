@@ -148,8 +148,10 @@ public class LocationProfileDetail extends AppCompatActivity implements SensorEv
 
                 }
             });
+
             ListAdapter adapter = new SimpleAdapter( LocationProfileDetail.this,
-                    deviceList, R.layout.view_device_entry, new String[] { "id","name"}, new int[] {R.id.txt_device_id, R.id.txt_device_name});
+                    deviceList, R.layout.view_device_entry, new String[] { "id","name"}, new int[]{R.id.txt_device_id, R.id.txt_device_name});
+
             lv.setAdapter(adapter);
         }else{
             Toast.makeText(getApplicationContext(),"No devices!",Toast.LENGTH_SHORT).show();
