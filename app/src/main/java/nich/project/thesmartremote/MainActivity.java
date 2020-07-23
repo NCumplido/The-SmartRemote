@@ -111,28 +111,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         setupListeners();
         //pivotTestAdd();
+
+        listTest();
     }
 
-    public void pivotTestAdd(){
+    public void listTest(){
 
-            PivotRepo repoTest = new PivotRepo(this);
-            PivotDeviceProfileDBItem testDBItem = new PivotDeviceProfileDBItem();
+        TextView txtListTest = findViewById(R.id.txt_list_test);
 
-            int pivotID = 1;
+        m_pivotRepo = new PivotRepo(getApplicationContext());
+        ArrayList<HashMap<String, String>> pivotList =  m_pivotRepo.getPivotList();
 
-            testDBItem.pivot_ID = 1;
-            testDBItem.device_ID = 1;
-            testDBItem.profile_ID = 1;
-            testDBItem.deviceName = "Device name: ";
-            testDBItem.profileName = "Profile name: ";
-            testDBItem.bearing = 10;
+        txtListTest.setText(pivotList.toString());
 
-                pivotID = repoTest.insert(testDBItem);
-
-                Toast.makeText(this,"New device insert",Toast.LENGTH_SHORT).show();
-
-
-        finish();
     }
 
     /////////////////////////////////////////////////////// SENSOR CHECK /////////////////////////////////////////////////////
@@ -359,6 +350,7 @@ excluding the force of gravity
                     TextView txtPivotId = view.findViewById(R.id.txt_pivot_id);
                     TextView txtPivotBearing = view.findViewById(R.id.txt_pivot_bearing);
                     int pivotId = Integer.parseInt(txtPivotId.getText().toString());
+
 //                    TextView txtLocationProfileName = view.findViewById(R.id.txt_location_profile_name);
 //                    String locationProfileName = txtLocationProfileName.getText().toString();
 //

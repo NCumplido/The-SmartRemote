@@ -30,7 +30,7 @@ public class DeviceDetail extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_device_detail);
 
         m_btnSave = findViewById(R.id.btn_save);
-        m_btnDelete = findViewById(R.id.btn_delete);
+        m_btnDelete = findViewById(R.id.btn_delete_device);
         m_btnClose = findViewById(R.id.btn_close);
 
         m_editTextName = findViewById(R.id.edit_text_name);
@@ -70,7 +70,7 @@ public class DeviceDetail extends AppCompatActivity implements View.OnClickListe
 
             finish();
 
-        }else if (view== findViewById(R.id.btn_delete)){
+        }else if (view== findViewById(R.id.btn_delete_device)){
             DeviceRepo repo = new DeviceRepo(this);
             repo.delete(_Device_Id);
             Toast.makeText(this, "Device record deleted", Toast.LENGTH_SHORT).show();

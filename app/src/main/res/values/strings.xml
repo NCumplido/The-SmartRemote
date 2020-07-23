@@ -14,7 +14,6 @@
     <string name="txt_compass_value">\Compass: </string>
     <string name="edit_details">Edit details</string>
     <string name="assign_gestures">Assign Gestures</string>
-    <string name="btn_delete">Delete</string>
     <string name="txt_name" />
     <string name="txt_room" />
     <string name="btn_csnt_see_device">Can\'t see device?</string>
@@ -51,4 +50,7 @@
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="btn_save">Save</string>
+    <string name="btn_delete">Delete</string>
+    <string name="btn_close">Close</string>
+    <string name="textView">Name</string>
 </resources>

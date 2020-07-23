@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="Name"
+            android:text="@string/textView"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <EditText
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:ems="10"
-            android:inputType="textPersonName" />
+            android:autofillHints="" />
     </LinearLayout>
 
     <LinearLayout
@@ -37,19 +37,22 @@
             android:id="@+id/btn_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Save" />
+            android:text="@string/btn_save"
+            style="?android:attr/buttonBarButtonStyle"/>
 
         <Button
             android:id="@+id/btn_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Close" />
+            android:text="@string/btn_close"
+            style="?android:attr/buttonBarButtonStyle"/>
 
         <Button
-            android:id="@+id/btn_delete"
+            android:id="@+id/btn_delete_device"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Delete" />
+            android:text="@string/btn_delete"
+            style="?android:attr/buttonBarButtonStyle"/>
     </LinearLayout>
 
 </LinearLayout>

@@ -27,6 +27,8 @@ public class ManageDevicesActivity extends AppCompatActivity {
     TextView txtDeviceId, 
             txtDeviceName;
 
+    DeviceRepo m_repo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,22 +78,35 @@ public class ManageDevicesActivity extends AppCompatActivity {
 
     private void loadList() {
 
-        DeviceRepo repo = new DeviceRepo(getApplicationContext());
+        m_repo = new DeviceRepo(getApplicationContext());
 
-        ArrayList<HashMap<String, String>> deviceList =  repo.getDeviceList();
+        ArrayList<HashMap<String, String>> deviceList =  m_repo.getDeviceList();
         if(deviceList.size()!=0) {
             ListView lv = findViewById(R.id.lst_devices);
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
                     txtDeviceId = view.findViewById(R.id.txt_device_id);
-                    String studentId = txtDeviceId.getText().toString();
+                    String deviceId = txtDeviceId.getText().toString();
                     txtDeviceName = view.findViewById(R.id.txt_device_name);
                     String deviceName = txtDeviceName.getText().toString();
                     Intent objIndent = new Intent(getApplicationContext(),DeviceDetail.class);
-                    objIndent.putExtra("device_Id", Integer.parseInt( studentId));
+                    objIndent.putExtra("device_Id", Integer.parseInt( deviceId));
                     objIndent.putExtra("device_name", deviceName);
                     startActivity(objIndent);
+                }
+            });
+            lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    txtDeviceId = view.findViewById(R.id.txt_device_id);
+                    int deviceId = Integer.parseInt(txtDeviceId.getText().toString());
+                    txtDeviceName = view.findViewById(R.id.txt_device_name);
+                    String deviceName = txtDeviceName.getText().toString();
+
+                    m_repo.delete(deviceId);
+                    loadList();
+                    return true;
                 }
             });
             ListAdapter adapter = new SimpleAdapter( ManageDevicesActivity.this,

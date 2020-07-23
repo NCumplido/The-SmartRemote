@@ -55,7 +55,7 @@ public class LocationProfileDetail extends AppCompatActivity implements SensorEv
         ab.setDisplayHomeAsUpEnabled(true);
 
         m_btnSave = findViewById(R.id.btn_save_location_profile);
-        m_btnDelete = findViewById(R.id.btn_delete);
+        m_btnDelete = findViewById(R.id.btn_delete_device);
         m_btnClose = findViewById(R.id.btn_close);
 
         m_editTextName = findViewById(R.id.edit_txt_location_profile_name);
@@ -113,7 +113,7 @@ public class LocationProfileDetail extends AppCompatActivity implements SensorEv
 
             finish();
 
-        }else if (view== findViewById(R.id.btn_delete)){
+        }else if (view== findViewById(R.id.btn_delete_device)){
             LocationProfileRepo repo = new LocationProfileRepo(this);
             repo.delete(_LocationProfile_Id);
             Toast.makeText(this, "LocationProfile record deleted", Toast.LENGTH_SHORT).show();

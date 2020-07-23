@@ -27,6 +27,8 @@ public class ManageLocationProfilesActivity extends AppCompatActivity {
     TextView txtLocationProfileId,
             txtLocationProfileName;
 
+    LocationProfileRepo m_repo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,9 +75,9 @@ public class ManageLocationProfilesActivity extends AppCompatActivity {
 
     private void loadList() {
 
-        LocationProfileRepo repo = new LocationProfileRepo(getApplicationContext());
+        m_repo = new LocationProfileRepo(getApplicationContext());
 
-        ArrayList<HashMap<String, String>> locationProfileList =  repo.getLocationProfileList();
+        ArrayList<HashMap<String, String>> locationProfileList =  m_repo.getLocationProfileList();
         if(locationProfileList.size()!=0) {
             ListView lv = findViewById(R.id.lst_location_profiles);
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -91,6 +93,19 @@ public class ManageLocationProfilesActivity extends AppCompatActivity {
                     startActivity(objIndent);
                 }
 
+            });
+            lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    txtLocationProfileId = view.findViewById(R.id.txt_location_profile_id);
+                    int locationProfileId = Integer.parseInt(txtLocationProfileId.getText().toString());
+                    txtLocationProfileName = view.findViewById(R.id.txt_location_profile_name);
+                    String locationProfileName = txtLocationProfileName.getText().toString();
+
+                    m_repo.delete(locationProfileId);
+                    loadList();
+                    return true;
+                }
             });
             ListAdapter adapter = new SimpleAdapter( ManageLocationProfilesActivity.this,
                     locationProfileList, R.layout.view_location_profile_entry, new String[] { "id","name"}, new int[] {R.id.txt_location_profile_id, R.id.txt_location_profile_name});
