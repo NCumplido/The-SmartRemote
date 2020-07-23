@@ -21,12 +21,8 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +30,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static android.graphics.Color.GREEN;
@@ -66,16 +61,21 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private Sensor m_sensorAccelerometer,
                     m_sensorProximity,
-                    m_sensorGameRotation;
+                    m_sensorGameRotation,
+                    m_sensorCompass;
 
     ///////////////////////////// VIBRATION /////////////////////////////
     private Vibrator m_vibrator;
     private long[] m_pattern = {100, 100, 100, 10 };
-    private String m_vibratorService;
-
-    private String m_SensorsNotProvideByDevice;
+    private String m_vibratorService,
+            m_SensorsNotProvideByDevice;
 
     private boolean m_isgestureListen = false;
+
+    private int m_testAlexa,
+            m_testLight,
+            m_testFridge,
+            m_compassValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +86,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         m_sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
+        ////////////////////////////////////////////////////////////////////////////// COMPASS TESTING //////////////////////////////////////////////////////////////////////////////
+        m_sensorCompass = m_sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+        m_sensorManager.registerListener(this, m_sensorCompass, SensorManager.SENSOR_DELAY_NORMAL);
+
+        m_testAlexa = 0;
+        m_testLight =90;
+        m_testFridge = 180;
+        
         deviceHasSensors();
 
         setupVibration();
@@ -95,7 +103,30 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         setupView();
 
         setupListeners();
+        //pivotTestAdd();
+    }
 
+    public void pivotTestAdd(){
+
+
+            PivotRepo repoTest = new PivotRepo(this);
+            PivotDeviceProfileDBItem testDBItem = new PivotDeviceProfileDBItem();
+
+            int pivotID = 1;
+
+            testDBItem.pivot_ID = 1;
+            testDBItem.device_ID = 1;
+            testDBItem.profile_ID = 1;
+            testDBItem.deviceName = "Device name: ";
+            testDBItem.profileName = "Profile name: ";
+            testDBItem.bearing = 10;
+
+                pivotID = repoTest.insert(testDBItem);
+
+                Toast.makeText(this,"New device insert",Toast.LENGTH_SHORT).show();
+
+
+        finish();
     }
 
     /////////////////////////////////////////////////////// SENSOR CHECK /////////////////////////////////////////////////////
@@ -186,9 +217,7 @@ excluding the force of gravity
         m_sensorManager.registerListener(this, m_sensorProximity, SensorManager.SENSOR_DELAY_NORMAL);
         m_sensorManager.registerListener(this, m_sensorGameRotation, SensorManager.SENSOR_DELAY_GAME);
 
-        m_sensorManager.registerListener(this,
-                m_sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
-                SensorManager.SENSOR_DELAY_GAME);
+        m_sensorManager.registerListener(this, m_sensorCompass, SensorManager.SENSOR_DELAY_NORMAL);
 
 //        m_imgGesturePerformed.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -295,46 +324,22 @@ excluding the force of gravity
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
         alertDialogBuilder.setView(m_pivotDialogueView);
 
-        PivotRepo repo = new PivotRepo(getApplicationContext());
-
-        ArrayList<HashMap<String, String>> pivotList =  repo.getPivotList();
-        if(pivotList.size()!=0) {
-            ListView lv = m_pivotDialogueView.findViewById(R.id.lst_location_pivot);
-            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-
-                    TextView txtPivotSelectID = m_pivotDialogueView.findViewById(R.id.txt_pivot_select_id);
-                    String studentId = txtPivotSelectID.getText().toString();
-
-                    TextView txtPivotLocationName = m_pivotDialogueView.findViewById(R.id.txt_select_location_name);
-
-                    String PivotLocationName = txtPivotLocationName.getText().toString();
-
-//
-                }
-            });
-            ListAdapter adapter = new SimpleAdapter( MainActivity.this,
-                    pivotList, R.layout.view_pivot_entry, new String[] { "id","name"}, new int[] {R.id.txt_pivot_select_id, R.id.txt_select_location_name});
-            lv.setAdapter(adapter);
-        }else{
-            Toast.makeText(getApplicationContext(),"No pivot entries!",Toast.LENGTH_SHORT).show();
-        }
-
+        loadPivotList(m_pivotDialogueView);
         // setup a dialog window
-        alertDialogBuilder.setCancelable(false)
-                .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
+//        alertDialogBuilder.setCancelable(false)
+//                .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        dialog.cancel();
+//                    }
+//                });
 
         // create an alert dialog
+
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
     }
 
-    private void loadPivotList(){
+    private void loadPivotList(View pivotDialogueView){
 
 
     }
@@ -352,11 +357,14 @@ excluding the force of gravity
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
 
-//        if(sensorEvent.sensor.getType() == Sensor.TYPE_PROXIMITY && sensorEvent.values[0] > 7){
-////            Window window = this.getWindow(); //to get the window of your activity;
-////            window.addFlags(FLAG_TURN_SCREEN_ON);
-////            //WindowManager.LayoutParams(FLAG_TURN_SCREEN_ON) //that you desire:            FLAG_TURN_SCREEN_ON
-//        }
+//                       float m_orientx = sensorEvent.values[0];
+//                        float m_orienty = sensorEvent.values[1];
+//                        float m_orientz = sensorEvent.values[2];
+//                        if (m_orientz < 90 && 60 < m_orientz && 80 < m_orientx && m_orientx <100) {
+//                            Toast.makeText(getApplicationContext(),"Right horizontal tilt", Toast.LENGTH_SHORT).show();
+//                       } else if (m_orientx > 255 && 265 > m_orientx) {
+//                           Toast.makeText(getApplicationContext(),"Anticlockwise", Toast.LENGTH_SHORT).show();
+//                        }
 
         if (m_isgestureListen == true) {
             synchronized (this) {
@@ -390,28 +398,39 @@ excluding the force of gravity
                         TextView txtZ = findViewById(R.id.txt_rotation_z);
                         txtZ.setText("Z: " + rotationZ);
 
-                        if(rotationX < 0.1 && rotationY > 0.3){
-                            Toast.makeText(getApplicationContext(),"Tilt right", Toast.LENGTH_SHORT).show();
+    m_testAlexa = 270;
+    m_testLight =320;
+    m_testFridge = 180;
 
-                            //m_vibrator.vibrate(m_pattern, -1);
-// Execute vibration pattern.
-                            m_vibrator.vibrate(1);
+                        if(rotationX < 0.1 && rotationY > 0.3){
+                            if(m_compassValue < m_testAlexa+10 && m_compassValue > m_testAlexa - 9) {
+                                Toast.makeText(getApplicationContext(), "Tilt right at Alexa", Toast.LENGTH_SHORT).show();
+                                //m_vibrator.vibrate(m_pattern, -1);
+                                m_vibrator.vibrate(1);
+                            }
                         }
                         if(rotationX < 0.1 && rotationY < -0.3) {
-                            Toast.makeText(getApplicationContext(),"Tilt left", Toast.LENGTH_SHORT).show();
+                            if(m_compassValue < m_testAlexa*1.05 && m_compassValue > m_testAlexa*0.95) {
+                                Toast.makeText(getApplicationContext(), "Tilt left at Alexa", Toast.LENGTH_SHORT).show();
 
-                            m_vibrator.vibrate(m_pattern, -1);
-// Execute vibration pattern.
-                            m_vibrator.vibrate(100); // Vibrate for 1 second.
+                                //m_vibrator.vibrate(m_pattern, -1);
+
+                                m_vibrator.vibrate(100); // Vibrate for 1 second.
+                            }
                         }
                         if(rotationX < -0.3) {
-                            Toast.makeText(getApplicationContext(),"Tilt forward", Toast.LENGTH_SHORT).show();
+                            if(m_compassValue < m_testAlexa*1.05 && m_compassValue > m_testAlexa*0.95) {
+                                Toast.makeText(getApplicationContext(), "Tilt forward at Alexa", Toast.LENGTH_SHORT).show();
 
-                            m_vibrator.vibrate(m_pattern, -1);
-// Execute vibration pattern.
-                            //m_vibrator.vibrate(100); // Vibrate for 1 second.
+                                m_vibrator.vibrate(m_pattern, -1);
+                                //m_vibrator.vibrate(100); // Vibrate for 1 second.
+                            }
                         }
 
+                        case Sensor.TYPE_ORIENTATION:
+                            m_compassValue = (int) sensorEvent.values[0];
+                            TextView txtCompass = findViewById(R.id.txt_compass_test);
+                            txtCompass.setText("Compass values: " + m_compassValue);
                 }
             }
         }
@@ -453,3 +472,9 @@ excluding the force of gravity
 //                           //Toast.makeText(getApplicationContext(),"Anticlockwise", Toast.LENGTH_SHORT).show();
 //                        //}
 //                        break;
+
+//        if(sensorEvent.sensor.getType() == Sensor.TYPE_PROXIMITY && sensorEvent.values[0] > 7){
+////            Window window = this.getWindow(); //to get the window of your activity;
+////            window.addFlags(FLAG_TURN_SCREEN_ON);
+////            //WindowManager.LayoutParams(FLAG_TURN_SCREEN_ON) //that you desire:            FLAG_TURN_SCREEN_ON
+//        }

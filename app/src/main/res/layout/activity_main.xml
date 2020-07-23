@@ -83,6 +83,12 @@
         android:layout_gravity="right"
         app:srcCompat="@android:drawable/ic_menu_always_landscape_portrait" />
 
+    <TextView
+        android:id="@+id/txt_compass_test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
     <!--    <ImageView-->
 <!--        android:id="@+id/img_gesture_performed"-->
 <!--        android:layout_width="match_parent"-->

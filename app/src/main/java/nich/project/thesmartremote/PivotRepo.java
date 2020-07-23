@@ -27,14 +27,20 @@ public class PivotRepo {
             //Open connection to write data
             SQLiteDatabase db = dbHelper.getWritableDatabase();
             ContentValues values = new ContentValues();
+
+            values.put(PivotDeviceProfileDBItem.KEY_DEVICE_ID, pivotDeviceProfileDBItem.device_ID);
             values.put(PivotDeviceProfileDBItem.KEY_DEVICE_NAME, pivotDeviceProfileDBItem.deviceName);
+
+            values.put(PivotDeviceProfileDBItem.KEY_PROFILE_ID, pivotDeviceProfileDBItem.profile_ID);
             values.put(PivotDeviceProfileDBItem.KEY_PROFILE_NAME, pivotDeviceProfileDBItem.profileName);
+
             values.put(PivotDeviceProfileDBItem.KEY_BEARING, pivotDeviceProfileDBItem.bearing);
 
             // Inserting Row
             long pivot_Id = db.insert(PivotDeviceProfileDBItem.TABLE, null, values);
             db.close(); // Closing database connection
             return (int) pivot_Id;
+
         }
 
         public void delete(int pivot_Id) {
