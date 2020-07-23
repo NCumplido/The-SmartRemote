@@ -21,8 +21,12 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +34,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static android.graphics.Color.GREEN;
@@ -48,12 +53,14 @@ y   x-> z+
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener { //This new comment of mine
 
-    private ImageView   m_imgGesturePerformed,
-                        m_imgLocations,
+    private ImageView   m_imgLocations,
                         m_imgDevices,
                         m_imgGestures;
 
-    private ImageButton m_imgBtnGestureListen;
+    private ImageButton m_imgBtnGestureListen,
+                        m_imgBtnChooseLocationList;
+
+    View m_pivotDialogueView;
 
     private SensorManager m_sensorManager;
 
@@ -165,6 +172,8 @@ excluding the force of gravity
 
         m_imgBtnGestureListen = findViewById(R.id.imgbtn_listen_gesture);
 
+        m_imgBtnChooseLocationList = findViewById(R.id.img_btn_list_locations);
+
     }
 
     /////////////////////////////////////////////////////// LISTENERS ///////////////////////////////////////////////////////
@@ -245,6 +254,15 @@ excluding the force of gravity
                 }
             }
         });
+
+        m_imgBtnChooseLocationList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPivotListDialogue();
+            }
+        });
+
+
     }
 
     /////////////////////////////////////////////////////// ERROR DIALOGUE /////////////////////////////////////////////////
@@ -268,6 +286,59 @@ excluding the force of gravity
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
     }
+
+    /////////////////////////////////////////////////////// LIST DIALOGUE /////////////////////////////////////////////////
+    private void showPivotListDialogue(){
+        // get prompts.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
+        m_pivotDialogueView = layoutInflater.inflate(R.layout.pivot_list_dialogue, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        alertDialogBuilder.setView(m_pivotDialogueView);
+
+        PivotRepo repo = new PivotRepo(getApplicationContext());
+
+        ArrayList<HashMap<String, String>> pivotList =  repo.getPivotList();
+        if(pivotList.size()!=0) {
+            ListView lv = m_pivotDialogueView.findViewById(R.id.lst_location_pivot);
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+
+                    TextView txtPivotSelectID = m_pivotDialogueView.findViewById(R.id.txt_pivot_select_id);
+                    String studentId = txtPivotSelectID.getText().toString();
+
+                    TextView txtPivotLocationName = m_pivotDialogueView.findViewById(R.id.txt_select_location_name);
+
+                    String PivotLocationName = txtPivotLocationName.getText().toString();
+
+//
+                }
+            });
+            ListAdapter adapter = new SimpleAdapter( MainActivity.this,
+                    pivotList, R.layout.view_pivot_entry, new String[] { "id","name"}, new int[] {R.id.txt_pivot_select_id, R.id.txt_select_location_name});
+            lv.setAdapter(adapter);
+        }else{
+            Toast.makeText(getApplicationContext(),"No pivot entries!",Toast.LENGTH_SHORT).show();
+        }
+
+        // setup a dialog window
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
+
+    private void loadPivotList(){
+
+
+    }
+
 
     /////////////////////////////////////////////////////// DEVICE CHECKS //////////////////////////////////////////////////
     private void openErrorDialogue(String m_SensorsNotProvideByDevice) {

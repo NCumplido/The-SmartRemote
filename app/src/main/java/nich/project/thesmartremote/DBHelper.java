@@ -14,7 +14,7 @@ public class DBHelper  extends SQLiteOpenHelper {
     //version number to upgrade database version
     //each time if you Add, Edit table, you need to change the
     //version number.
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 9;
 
     // Database Name
     private static final String DATABASE_NAME = "application.db";
@@ -44,7 +44,8 @@ public class DBHelper  extends SQLiteOpenHelper {
                 + PivotDeviceProfileDBItem.KEY_DEVICE_ID + " INTEGER ,"
                 + PivotDeviceProfileDBItem.KEY_PROFILE_ID + " INTEGER ,"
                 + PivotDeviceProfileDBItem.KEY_DEVICE_NAME + " TEXT ,"
-                + PivotDeviceProfileDBItem.KEY_PROFILE_NAME + " TEXT )";
+                + PivotDeviceProfileDBItem.KEY_PROFILE_NAME + " TEXT ,"
+                + PivotDeviceProfileDBItem.KEY_BEARING + " STRING )";
 
         db.execSQL(CREATE_TABLE_Pivot_DEVICE_PROFILES);
 
@@ -55,6 +56,7 @@ public class DBHelper  extends SQLiteOpenHelper {
         // Drop older table if existed, all data will be gone!!!
         db.execSQL("DROP TABLE IF EXISTS " + DeviceDBItem.TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + LocationProfileDBItem.TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + PivotDeviceProfileDBItem.TABLE);
         // Create tables again
         onCreate(db);
 

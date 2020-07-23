@@ -63,9 +63,10 @@ public class PivotRepo {
             SQLiteDatabase db = dbHelper.getReadableDatabase();
             String selectQuery =  "SELECT  " +
                     PivotDeviceProfileDBItem.KEY_ID + "," +
-                    PivotDeviceProfileDBItem.KEY_PROFILE_ID +
-                    PivotDeviceProfileDBItem.KEY_DEVICE_ID +
-                    PivotDeviceProfileDBItem.KEY_PROFILE_NAME +
+                    PivotDeviceProfileDBItem.KEY_PROFILE_ID + "," +
+                    PivotDeviceProfileDBItem.KEY_DEVICE_ID + "," +
+                    PivotDeviceProfileDBItem.KEY_DEVICE_NAME + "," +
+                    PivotDeviceProfileDBItem.KEY_PROFILE_NAME + "," +
                     PivotDeviceProfileDBItem.KEY_BEARING +
                     " FROM " + PivotDeviceProfileDBItem.TABLE;
 
