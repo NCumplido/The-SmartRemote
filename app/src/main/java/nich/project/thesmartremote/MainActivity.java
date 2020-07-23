@@ -21,8 +21,12 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +34,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static android.graphics.Color.GREEN;
@@ -63,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     m_sensorProximity,
                     m_sensorGameRotation,
                     m_sensorCompass;
+
+    PivotRepo m_pivotRepo;
 
     ///////////////////////////// VIBRATION /////////////////////////////
     private Vibrator m_vibrator;
@@ -107,7 +114,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     public void pivotTestAdd(){
-
 
             PivotRepo repoTest = new PivotRepo(this);
             PivotDeviceProfileDBItem testDBItem = new PivotDeviceProfileDBItem();
@@ -341,9 +347,39 @@ excluding the force of gravity
 
     private void loadPivotList(View pivotDialogueView){
 
+        m_pivotRepo = new PivotRepo(getApplicationContext());
+
+        ArrayList<HashMap<String, String>> locationProfileList =  m_pivotRepo.getPivotList();
+        if(locationProfileList.size()!=0) {
+            ListView lv = pivotDialogueView.findViewById(R.id.lst_location_pivot);
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+
+                    TextView txtPivotId = view.findViewById(R.id.txt_pivot_id);
+                    TextView txtPivotBearing = view.findViewById(R.id.txt_pivot_bearing);
+                    int pivotId = Integer.parseInt(txtPivotId.getText().toString());
+//                    TextView txtLocationProfileName = view.findViewById(R.id.txt_location_profile_name);
+//                    String locationProfileName = txtLocationProfileName.getText().toString();
+//
+//                    //getPivotById();
+//                    txt_pivot_location_profile_id
+//                            txt_device_id
+//                    txt_pivot_device_name
+//                            txt_pivot_location_profile_name
+//                    txt_pivot_bearing
+                    m_pivotRepo.delete(pivotId);
+                }
+
+            });
+            ListAdapter adapter = new SimpleAdapter( MainActivity.this,
+                    locationProfileList, R.layout.view_pivot_entry, new String[] { "id","bearing"}, new int[] {R.id.txt_pivot_id, R.id.txt_pivot_bearing});
+            lv.setAdapter(adapter);
+        }else{
+            Toast.makeText(getApplicationContext(),"No No pivots!",Toast.LENGTH_SHORT).show();
+        }
 
     }
-
 
     /////////////////////////////////////////////////////// DEVICE CHECKS //////////////////////////////////////////////////
     private void openErrorDialogue(String m_SensorsNotProvideByDevice) {
