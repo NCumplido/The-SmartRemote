@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private ImageButton m_imgBtnGestureListen,
                         m_imgBtnChooseLocationList;
 
+    private TextView m_txtSelectedLocationProfile;
+
     View m_pivotDialogueView;
 
     private SensorManager m_sensorManager;
@@ -70,6 +72,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     m_sensorCompass;
 
     PivotRepo m_pivotRepo;
+
+    int m_selectedLocationID;
+    PivotDeviceProfileDBItem m_selectedPivotLocationProfile;
 
     ///////////////////////////// VIBRATION /////////////////////////////
     private Vibrator m_vibrator;
@@ -100,6 +105,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         m_testAlexa = 0;
         m_testLight =90;
         m_testFridge = 180;
+
+        m_txtSelectedLocationProfile = findViewById(R.id.txt_selected_location);
         
         deviceHasSensors();
 
@@ -351,6 +358,11 @@ excluding the force of gravity
                     TextView txtPivotBearing = view.findViewById(R.id.txt_pivot_bearing);
                     int pivotId = Integer.parseInt(txtPivotId.getText().toString());
 
+                    m_selectedLocationID = pivotId;
+                    m_selectedPivotLocationProfile = m_pivotRepo.getPivotById(pivotId);
+
+                    m_txtSelectedLocationProfile.setText("Selected location: " + m_selectedPivotLocationProfile.profileName);
+
 //                    TextView txtLocationProfileName = view.findViewById(R.id.txt_location_profile_name);
 //                    String locationProfileName = txtLocationProfileName.getText().toString();
 //
@@ -360,15 +372,26 @@ excluding the force of gravity
 //                    txt_pivot_device_name
 //                            txt_pivot_location_profile_name
 //                    txt_pivot_bearing
-                    m_pivotRepo.delete(pivotId);
+                    //m_pivotRepo.delete(pivotId);
                 }
 
+            });
+            lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    TextView txtPivotId = view.findViewById(R.id.txt_pivot_id);
+                    TextView txtPivotBearing = view.findViewById(R.id.txt_pivot_bearing);
+                    int pivotId = Integer.parseInt(txtPivotId.getText().toString());
+                    m_pivotRepo.delete(pivotId);
+                    //Reload list
+                    return false;
+                }
             });
             ListAdapter adapter = new SimpleAdapter( MainActivity.this,
                     locationProfileList, R.layout.view_pivot_entry, new String[] { "id","bearing"}, new int[] {R.id.txt_pivot_id, R.id.txt_pivot_bearing});
             lv.setAdapter(adapter);
         }else{
-            Toast.makeText(getApplicationContext(),"No No pivots!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"No pivots!",Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -431,10 +454,20 @@ excluding the force of gravity
     m_testFridge = 180;
 
                         if(rotationX < 0.1 && rotationY > 0.3){
-                            if(m_compassValue < m_testAlexa+10 && m_compassValue > m_testAlexa - 9) {
+                            if(m_compassValue < m_testAlexa+10 && m_compassValue > m_testAlexa - 10) {
                                 Toast.makeText(getApplicationContext(), "Tilt right at Alexa", Toast.LENGTH_SHORT).show();
                                 //m_vibrator.vibrate(m_pattern, -1);
                                 m_vibrator.vibrate(1);
+                            }
+                            if(m_compassValue < m_testLight+10 && m_compassValue > m_testLight - 10) {
+                                Toast.makeText(getApplicationContext(), "Tilt right at m_testLight", Toast.LENGTH_SHORT).show();
+                                //m_vibrator.vibrate(m_pattern, -1);
+                                m_vibrator.vibrate(10);
+                            }
+                            if(m_compassValue < m_testFridge+10 && m_compassValue > m_testFridge - 10) {
+                                Toast.makeText(getApplicationContext(), "Tilt right at m_testFridge", Toast.LENGTH_SHORT).show();
+                                //m_vibrator.vibrate(m_pattern, -1);
+                                m_vibrator.vibrate(20);
                             }
                         }
                         if(rotationX < 0.1 && rotationY < -0.3) {
@@ -445,6 +478,16 @@ excluding the force of gravity
 
                                 m_vibrator.vibrate(100); // Vibrate for 1 second.
                             }
+                            if(m_compassValue < m_testLight+10 && m_compassValue > m_testLight - 10) {
+                                Toast.makeText(getApplicationContext(), "Tilt left at m_testLight", Toast.LENGTH_SHORT).show();
+                                //m_vibrator.vibrate(m_pattern, -1);
+                                m_vibrator.vibrate(10);
+                            }
+                            if(m_compassValue < m_testFridge+10 && m_compassValue > m_testFridge - 10) {
+                                Toast.makeText(getApplicationContext(), "Tilt left at m_testFridge", Toast.LENGTH_SHORT).show();
+                                //m_vibrator.vibrate(m_pattern, -1);
+                                m_vibrator.vibrate(20);
+                            }
                         }
                         if(rotationX < -0.3) {
                             if(m_compassValue < m_testAlexa*1.05 && m_compassValue > m_testAlexa*0.95) {
@@ -452,6 +495,16 @@ excluding the force of gravity
 
                                 m_vibrator.vibrate(m_pattern, -1);
                                 //m_vibrator.vibrate(100); // Vibrate for 1 second.
+                            }
+                            if(m_compassValue < m_testLight+10 && m_compassValue > m_testLight - 10) {
+                                Toast.makeText(getApplicationContext(), "Tilt forward at m_testLight", Toast.LENGTH_SHORT).show();
+                                //m_vibrator.vibrate(m_pattern, -1);
+                                m_vibrator.vibrate(10);
+                            }
+                            if(m_compassValue < m_testFridge+10 && m_compassValue > m_testFridge - 10) {
+                                Toast.makeText(getApplicationContext(), "Tilt forward at m_testFridge", Toast.LENGTH_SHORT).show();
+                                //m_vibrator.vibrate(m_pattern, -1);
+                                m_vibrator.vibrate(20);
                             }
                         }
 

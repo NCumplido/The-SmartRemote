@@ -8,14 +8,6 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/txt_connect_status"
-        style="@style/SwanseaBlueTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/connected_status"
-        android:textSize="15sp" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,6 +43,20 @@
 <!--            app:srcCompat="@android:drawable/ic_menu_manage" />-->
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/txt_connect_status"
+        style="@style/SwanseaBlueTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/connected_status"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/txt_selected_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
 
     <TextView
         android:id="@+id/txt_rotation_x"
@@ -91,6 +97,12 @@
 
     <TextView
         android:id="@+id/txt_list_test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/txt_pivot_item_test"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="TextView" />
