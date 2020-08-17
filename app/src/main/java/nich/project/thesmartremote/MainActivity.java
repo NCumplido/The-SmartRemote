@@ -76,6 +76,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     int m_selectedLocationID;
     PivotDeviceProfileDBItem m_selectedPivotLocationProfile;
 
+    ArrayList<HashMap<String, String>> m_locationProfileList;
+
     ///////////////////////////// VIBRATION /////////////////////////////
     private Vibrator m_vibrator;
     private long[] m_pattern = {100, 100, 100, 10 };
@@ -347,8 +349,8 @@ excluding the force of gravity
 
         m_pivotRepo = new PivotRepo(getApplicationContext());
 
-        ArrayList<HashMap<String, String>> locationProfileList =  m_pivotRepo.getPivotList();
-        if(locationProfileList.size()!=0) {
+        m_locationProfileList =  m_pivotRepo.getPivotList();
+        if(m_locationProfileList.size()!=0) {
             ListView lv = pivotDialogueView.findViewById(R.id.lst_location_pivot);
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -361,8 +363,10 @@ excluding the force of gravity
                     m_selectedLocationID = pivotId;
                     m_selectedPivotLocationProfile = m_pivotRepo.getPivotById(pivotId);
 
-                    m_txtSelectedLocationProfile.setText("Selected location: " + m_selectedPivotLocationProfile.profileName);
+                    m_txtSelectedLocationProfile.setText(m_selectedPivotLocationProfile.deviceName);
 
+                    //m_txtSelectedLocationProfile.setText("Selected location: " + m_locationProfileList.get(m_selectedLocationID));
+                    
 //                    TextView txtLocationProfileName = view.findViewById(R.id.txt_location_profile_name);
 //                    String locationProfileName = txtLocationProfileName.getText().toString();
 //
@@ -388,7 +392,7 @@ excluding the force of gravity
                 }
             });
             ListAdapter adapter = new SimpleAdapter( MainActivity.this,
-                    locationProfileList, R.layout.view_pivot_entry, new String[] { "id","bearing"}, new int[] {R.id.txt_pivot_id, R.id.txt_pivot_bearing});
+                    m_locationProfileList, R.layout.view_pivot_entry, new String[] { "id","bearing"}, new int[] {R.id.txt_pivot_id, R.id.txt_pivot_bearing});
             lv.setAdapter(adapter);
         }else{
             Toast.makeText(getApplicationContext(),"No pivots!",Toast.LENGTH_SHORT).show();
@@ -416,6 +420,22 @@ excluding the force of gravity
 //                       } else if (m_orientx > 255 && 265 > m_orientx) {
 //                           Toast.makeText(getApplicationContext(),"Anticlockwise", Toast.LENGTH_SHORT).show();
 //                        }
+
+//        Ø public static float getAltitude(float p0, float p):
+//        Computes the Altitude in meters from the atmospheric pressure and the
+//        pressure at sea level.
+//        Ø public static float[] getOrientation(float[] R,
+//        float[] values): Computes the device's orientation based on the
+//        rotation matrix.
+//        Ø public static float getInclination(float[] I):
+//        Computes the geomagnetic inclination angle in radians from the
+//        inclination matrix I returned by getRotationMatrix(float[],
+//        float[], float[], float[]).
+//        Ø public static void getAngleChange(float[]
+//        angleChange, float[] R, float[] prevR): Helper function to
+//        compute the angle change between two rotation matrices.
+//        Ø More public function: getRotationMatrix,
+//                getQuaternionFromVector, getRotationMatrixFromVector
 
         if (m_isgestureListen == true) {
             synchronized (this) {

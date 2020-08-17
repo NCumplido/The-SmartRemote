@@ -14,7 +14,7 @@ public class DBHelper  extends SQLiteOpenHelper {
     //version number to upgrade database version
     //each time if you Add, Edit table, you need to change the
     //version number.
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 12;
 
     // Database Name
     private static final String DATABASE_NAME = "application.db";
@@ -39,13 +39,14 @@ public class DBHelper  extends SQLiteOpenHelper {
 
         db.execSQL(CREATE_TABLE_LOCATION_PROFILES);
 
-        String CREATE_TABLE_Pivot_DEVICE_PROFILES = "CREATE TABLE " + PivotDeviceProfileDBItem.TABLE  + "("
-                + PivotDeviceProfileDBItem.KEY_ID  + " INTEGER PRIMARY KEY AUTOINCREMENT ,"
-                + PivotDeviceProfileDBItem.KEY_DEVICE_ID + " INTEGER ,"
-                + PivotDeviceProfileDBItem.KEY_PROFILE_ID + " INTEGER ,"
-                + PivotDeviceProfileDBItem.KEY_DEVICE_NAME + " TEXT ,"
+        String CREATE_TABLE_Pivot_DEVICE_PROFILES = "CREATE TABLE "
+                + PivotDeviceProfileDBItem.TABLE            + "("
+                + PivotDeviceProfileDBItem.KEY_ID           + " INTEGER PRIMARY KEY AUTOINCREMENT ,"
+                + PivotDeviceProfileDBItem.KEY_DEVICE_ID    + " INTEGER ,"
+                + PivotDeviceProfileDBItem.KEY_PROFILE_ID   + " INTEGER REFERENCES " + LocationProfileDBItem.KEY_ID + " ON DELETE CASCADE ,"
+                + PivotDeviceProfileDBItem.KEY_DEVICE_NAME  + " TEXT ,"
                 + PivotDeviceProfileDBItem.KEY_PROFILE_NAME + " TEXT ,"
-                + PivotDeviceProfileDBItem.KEY_BEARING + " STRING )";
+                + PivotDeviceProfileDBItem.KEY_BEARING      + " STRING )";
 
         db.execSQL(CREATE_TABLE_Pivot_DEVICE_PROFILES);
 
