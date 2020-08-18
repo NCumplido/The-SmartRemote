@@ -16,7 +16,7 @@
         android:required="true" />
     <uses-permission
         android:name="android.permission.VIBRATE"
-        android:required="true"/>
+        android:required="true" />
 
     <uses-feature
         android:name="android.hardware.sensor.accelerometer"
@@ -29,7 +29,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LocationProfileDetail"
+
+        <activity android:name=".ConnectActivity" />
+        <activity
+            android:name=".LocationProfileDetail"
             android:label="Location Profile Detail"
             android:parentActivityName=".ManageLocationProfilesActivity" />
         <activity
@@ -67,7 +70,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DeviceDetail"
+        <activity
+            android:name=".DeviceDetail"
             android:label="Device Detail"
             android:parentActivityName=".ManageDevicesActivity" />
     </application>
