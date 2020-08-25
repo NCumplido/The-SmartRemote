@@ -53,4 +53,12 @@
     <string name="btn_delete">Delete</string>
     <string name="btn_close">Close</string>
     <string name="textView">Name</string>
+    <string name="txt_connection_status">Connection status</string>
+    <string name="btn_wifi_on_off">Wifi On Off</string>
+    <string name="btn_discover">Discover</string>
+    <string name="txt_message">Message</string>
+    <string name="hint">Message</string>
+    <string name="btn_send">Send</string>
+    <string name="btn_send">Send</string>
+    <string name="edit_text">Enter text here</string>
 </resources>

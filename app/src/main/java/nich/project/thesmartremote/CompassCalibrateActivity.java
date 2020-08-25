@@ -1,13 +1,5 @@
 package nich.project.thesmartremote;
 
-/*
-Parts of code from:
-
-Dr. Tom Owen: CSC306
-Dr. Deepak Sahoo: CSCM79
-Swansea University
-*/
-
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;

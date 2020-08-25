@@ -1,14 +1,5 @@
 package nich.project.thesmartremote;
 
-/*
-Some code from:
-
-Dr. Tom Owen: CSC306
-Dr. Deepak Sahoo: CSCM79
-Swansea University
-
- */
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -41,8 +32,13 @@ import static android.graphics.Color.GREEN;
 import static android.view.WindowManager.LayoutParams;
 
 /*
-y   x-> z+
-^
+Vectores and axis:
+When device screen faces the user:
+y: ^ Up down
+x: <-> Left right
+z: back and fore
+
+Think of the left-hand rule
  */
 
 //https://developer.android.com/reference/android/net/wifi/WifiManager

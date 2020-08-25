@@ -1,11 +1,5 @@
 package nich.project.thesmartremote;
 
-/*
-Parts of code from:
-Dr. Tom Owen: CSC306    TVYM
-Swansea University
-*/
-
 public class Device {
 
     // Labels table name
