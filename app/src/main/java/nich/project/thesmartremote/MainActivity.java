@@ -3,7 +3,6 @@ package nich.project.thesmartremote;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -13,6 +12,7 @@ import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static android.graphics.Color.GREEN;
 import static android.view.WindowManager.LayoutParams;
 
 /*
@@ -38,7 +37,7 @@ y: ^ Up down
 x: <-> Left right
 z: back and fore
 
-Think of the left-hand rule
+Think of the left-hand rule                                     I SHOULD REALLY TIDY THIS UP
  */
 
 //https://developer.android.com/reference/android/net/wifi/WifiManager
@@ -48,6 +47,8 @@ Think of the left-hand rule
 //https://developer.android.com/training/connect-devices-wirelessly
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener { //This new comment of mine
+
+    private Button      m_btnConnect;
 
     private ImageView   m_imgLocations,
                         m_imgDevices,
@@ -191,10 +192,6 @@ excluding the force of gravity
     /////////////////////////////////////////////////////// VIEW STUFF ///////////////////////////////////////////////////////
     private void setupView() {
 
-        TextView m_txtWifiStatus = findViewById(R.id.txt_connect_status);
-        m_txtWifiStatus.setTypeface(m_txtWifiStatus.getTypeface(), Typeface.ITALIC);
-        m_txtWifiStatus.setTextColor(GREEN);
-
         //m_imgGesturePerformed = findViewById(R.id.img_gesture_performed);
 
         m_imgLocations = findViewById(R.id.img_locations);
@@ -206,6 +203,8 @@ excluding the force of gravity
         m_imgBtnGestureListen = findViewById(R.id.imgbtn_listen_gesture);
 
         m_imgBtnChooseLocationList = findViewById(R.id.img_btn_list_locations);
+
+        m_btnConnect = findViewById(R.id.btn_connect);
 
     }
 
@@ -293,6 +292,13 @@ excluding the force of gravity
             }
         });
 
+        m_btnConnect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent connectActivityIntent = new Intent(getApplicationContext(), ConnectActivity.class);
+                startActivity(connectActivityIntent);
+            }
+        });
 
     }
 
