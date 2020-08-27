@@ -60,4 +60,6 @@
     <string name="hint">Message</string>
     <string name="btn_send">Send</string>
     <string name="edit_text">Enter text here</string>
+    <string name="btn_register">Register</string>
+    <string name="btn_connect_to_device">Connect</string>
 </resources>
