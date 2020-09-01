@@ -10,6 +10,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -21,8 +22,15 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +45,7 @@ y: ^ Up down
 x: <-> Left right
 z: back and fore
 
-Think of the left-hand rule                                     I SHOULD REALLY TIDY THIS UP
+Think of the left-hand rule                                     //TODO: I SHOULD REALLY TIDY THIS UP
  */
 
 //https://developer.android.com/reference/android/net/wifi/WifiManager
@@ -46,7 +54,12 @@ Think of the left-hand rule                                     I SHOULD REALLY 
 //https://developers.google.com/nearby/connections/overview
 //https://developer.android.com/training/connect-devices-wirelessly
 
-public class MainActivity extends AppCompatActivity implements SensorEventListener { //This new comment of mine
+public class MainActivity extends AppCompatActivity implements SensorEventListener, NavigationView.OnNavigationItemSelectedListener {
+
+    DrawerLayout m_drawerLayout;
+    NavigationView m_navView;
+    androidx.appcompat.widget.Toolbar m_toolbar;
+    ActionBar ab;
 
     private Button      m_btnConnect;
 
@@ -93,6 +106,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Get a support ActionBar corresponding to this toolbar
+        ab = getSupportActionBar();
+
         getWindow().addFlags(LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         m_sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -119,6 +135,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         //pivotTestAdd();
 
         listTest();
+
+        setupDrawer();
     }
 
     public void listTest(){
@@ -200,11 +218,37 @@ excluding the force of gravity
 
         m_imgGestures = findViewById(R.id.img_gestures);
 
-        m_imgBtnGestureListen = findViewById(R.id.imgbtn_listen_gesture);
-
-        m_imgBtnChooseLocationList = findViewById(R.id.img_btn_list_locations);
+        //m_imgBtnGestureListen = findViewById(R.id.imgbtn_listen_gesture);
+        //m_imgBtnChooseLocationList = findViewById(R.id.img_btn_list_locations);
 
         m_btnConnect = findViewById(R.id.btn_connect);
+
+    }
+
+    ///////////////////////////////////////////////////////    Drawer  ///////////////////////////////////////////////////////
+    public void setupDrawer(){
+
+        m_drawerLayout = findViewById(R.id.drawer_layout);
+        m_navView = findViewById(R.id.nav_view);
+
+        m_navView.bringToFront();
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, m_drawerLayout, m_toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        m_drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        m_navView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if(m_drawerLayout.isDrawerOpen(GravityCompat.END)){
+            m_drawerLayout.closeDrawer(GravityCompat.END);
+        } else {
+
+            super.onBackPressed();
+
+        }
 
     }
 
@@ -267,7 +311,7 @@ excluding the force of gravity
             }
         });
 /////////////////////////////////////////////////////// LISTENERS BUTTONS ///////////////////////////////////////////////////////
-        m_imgBtnGestureListen.setOnClickListener(new View.OnClickListener() {
+/*        m_imgBtnGestureListen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(m_isgestureListen == true) {
@@ -284,13 +328,15 @@ excluding the force of gravity
                 }
             }
         });
+ */
 
-        m_imgBtnChooseLocationList.setOnClickListener(new View.OnClickListener() {
+        /* m_imgBtnChooseLocationList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showPivotListDialogue();
             }
         });
+        */
 
         m_btnConnect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -544,6 +590,12 @@ excluding the force of gravity
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        return false;
     }
 
     //TODO: Register and unregister sensors

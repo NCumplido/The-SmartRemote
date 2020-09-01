@@ -62,4 +62,13 @@
     <string name="edit_text">Enter text here</string>
     <string name="btn_register">Register</string>
     <string name="btn_connect_to_device">Connect</string>
+    <string name="btn_connect_devices">Connect</string>
+    <string name="txt_compass_test">TextView</string>
+    <string name="txt_list_test">TextView</string>
+    <string name="txt_pivot_item_test">TextView</string>
+    <string name="txt_rotation_z">TextView</string>
+    <string name="list_location_image_button">List location image button</string>
+    <string name="locations_image_button">Locations image button</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
