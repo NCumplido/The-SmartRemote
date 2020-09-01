@@ -10,6 +10,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,7 +24,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     DrawerLayout m_drawerLayout;
     NavigationView m_navView;
     androidx.appcompat.widget.Toolbar m_toolbar;
-    ActionBar ab;
+    MenuItem m_selectedLocation;
 
     private Button      m_btnConnect;
 
@@ -105,9 +105,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Get a support ActionBar corresponding to this toolbar
-        ab = getSupportActionBar();
 
         getWindow().addFlags(LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -594,8 +591,35 @@ excluding the force of gravity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Menu menu = m_navView.getMenu();
 
-        return false;
+        switch(item.getItemId()){
+            case R.id.nav_example_location1:
+
+                Toast.makeText(getApplicationContext(), "Example 1", Toast.LENGTH_SHORT)
+                        .show();
+                //m_selectedLocation = item;
+                //menu.findItem(item.getItemId()).setVisible(false);
+                break;
+
+            case R.id.nav_example_location2:
+                Toast.makeText(getApplicationContext(), "Example 2", Toast.LENGTH_SHORT)
+                        .show();
+                break;
+
+            case R.id.nav_example_location3:
+                Toast.makeText(getApplicationContext(), "Example 3", Toast.LENGTH_SHORT)
+                        .show();
+                break;
+
+        }
+
+        m_drawerLayout.closeDrawer(GravityCompat.END);
+
+        //To default to an item:
+        //m_navView.setCheckedItem(R.id.nav_home);
+
+        return true;
     }
 
     //TODO: Register and unregister sensors
