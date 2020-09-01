@@ -1,6 +1,7 @@
 package nich.project.thesmartremote;
 
 import android.content.Context;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.View;
@@ -11,22 +12,32 @@ import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+
+import nich.project.thesmartremote.network.ClientScanner;
+import nich.project.thesmartremote.network.NetworkUtils;
+
 public class ConnectActivity extends AppCompatActivity {
 
     ////////// VIEW VARIABLES //////////
-    Button btnOnOff;
+    Button btnOnOff,
+            btnDiscover;
     ListView lstPeers;
-    TextView txtConnectionStatus;
+    TextView txtConnectionStatus,
+                txtResults;
+
+    private String ipv4;
 
     ////////// WIFI VARIABLES //////////
     WifiManager wifiManager;
+    WifiInfo wifiInfo;
     Boolean isWifiEnabled;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect);
-
 
         // Get a support ActionBar corresponding to this toolbar
         ActionBar ab = getSupportActionBar();
@@ -42,11 +53,21 @@ public class ConnectActivity extends AppCompatActivity {
     /////////////////////////////////////////////////////// VIEW SETUP ///////////////////////////////////////////////////////
     public void setupView(){
 
+        txtConnectionStatus = findViewById(R.id.txt_connection_status);
+
+        txtResults = findViewById(R.id.txt_results);
+
         btnOnOff = findViewById(R.id.btn_wifi_on_off);
 
-        lstPeers = findViewById(R.id.lst_peers);
+        btnDiscover = findViewById(R.id.btn_discover);
+        btnDiscover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scanNetwork();
+            }
+        });
 
-        txtConnectionStatus = findViewById(R.id.txt_connection_status);
+        lstPeers = findViewById(R.id.lst_peers);
 
         btnOnOff.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +79,8 @@ public class ConnectActivity extends AppCompatActivity {
     private void setupWifi() {
 
         wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        wifiInfo =  wifiManager.getConnectionInfo();
+
         isWifiEnabled = wifiManager.isWifiEnabled();
 
         if(isWifiEnabled==true) {
@@ -82,6 +105,29 @@ public class ConnectActivity extends AppCompatActivity {
             txtConnectionStatus.setText("Wifi on");
         } else{
             txtConnectionStatus.setText("Wifi off");
+        }
+    }
+
+    public void scanNetwork(){
+        txtResults.append("SSID: " + wifiInfo.getSSID());
+        txtResults.append("\nBSSID: " + wifiInfo.getBSSID());
+        txtResults.append("\nspeed: " + wifiInfo.getLinkSpeed());
+        txtResults.append("\ngateway IP: " + NetworkUtils.getIpFromIntSigned(wifiManager.getDhcpInfo().gateway));
+        ipv4 = NetworkUtils.getIPV4Address();
+        txtResults.append("\nLocal Ipv4 IP: " + ipv4);
+        txtResults.append("\nReachable ips:");
+
+        ClientScanner clientScannerTask = new ClientScanner(ipv4);
+        ArrayList<String> reachableIps = null;
+        try {
+            reachableIps = clientScannerTask.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        for (String s : reachableIps){
+            txtResults.append("\n\t" + s);
         }
     }
 

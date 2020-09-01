@@ -39,6 +39,12 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/txt_results"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
     <ListView
         android:id="@+id/lst_peers"
         android:layout_width="match_parent"
@@ -56,7 +62,6 @@
             android:id="@+id/btn_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onRegisterClicked"
             android:text="@string/btn_register" />
 
         <Space
