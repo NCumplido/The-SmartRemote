@@ -117,6 +117,7 @@ public class ConnectActivity extends AppCompatActivity {
         txtResults.append("\nLocal Ipv4 IP: " + ipv4);
         txtResults.append("\nReachable ips:");
 
+        //Todo: only do this if wifi is connected
         ClientScanner clientScannerTask = new ClientScanner(ipv4);
         ArrayList<String> reachableIps = null;
         try {

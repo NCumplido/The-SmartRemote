@@ -503,16 +503,16 @@ excluding the force of gravity
 
                     case Sensor.TYPE_GAME_ROTATION_VECTOR:
                         float rotationX = sensorEvent.values[0];
-                        TextView txtX = findViewById(R.id.txt_rotation_x);
-                        txtX.setText("X: " + rotationX);
+                        //TextView txtX = findViewById(R.id.txt_rotation_x);
+                        //txtX.setText("X: " + rotationX);
 
                         float rotationY = sensorEvent.values[1];
-                        TextView txtY = findViewById(R.id.txt_rotation_y);
-                        txtY.setText("Y: " + rotationY);
+                        //TextView txtY = findViewById(R.id.txt_rotation_y);
+                        //txtY.setText("Y: " + rotationY);
 
                         float rotationZ = sensorEvent.values[2];
-                        TextView txtZ = findViewById(R.id.txt_rotation_z);
-                        txtZ.setText("Z: " + rotationZ);
+                        //TextView txtZ = findViewById(R.id.txt_rotation_z);
+                        //txtZ.setText("Z: " + rotationZ);
 
     m_testAlexa = 270;
     m_testLight =320;
@@ -575,8 +575,6 @@ excluding the force of gravity
 
                         case Sensor.TYPE_ORIENTATION:
                             m_compassValue = (int) sensorEvent.values[0];
-                            TextView txtCompass = findViewById(R.id.txt_compass_test);
-                            txtCompass.setText("Compass values: " + m_compassValue);
                 }
             }
         }
@@ -612,6 +610,9 @@ excluding the force of gravity
                         .show();
                 break;
 
+            case R.id.nav_locations:
+                 Intent manageLocationIntent = new Intent(this, ManageLocationProfilesActivity.class);
+                    startActivity(manageLocationIntent);
         }
 
         m_drawerLayout.closeDrawer(GravityCompat.END);

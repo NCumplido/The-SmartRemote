@@ -22,9 +22,9 @@
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        app:menu="@menu/nav_drawer"
-        android:layout_gravity="end"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        app:menu="@menu/nav_drawer" />
 
 
     <LinearLayout
@@ -64,13 +64,23 @@
                 android:contentDescription="@string/locations_image_button"
                 app:srcCompat="@android:drawable/ic_menu_mylocation" />
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
             <ImageView
                 android:id="@+id/img_gestures"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:contentDescription="Gestures"
+                android:contentDescription="@string/img_gestures"
                 app:srcCompat="@android:drawable/ic_menu_always_landscape_portrait" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
             <ImageView
                 android:id="@+id/img_devices"
@@ -94,38 +104,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/btn_connect_devices" />
-
-        <LinearLayout
-            android:id="@+id/lin_layout_rotation_txtviews"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/txt_rotation_x"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
-
-            <TextView
-                android:id="@+id/txt_rotation_y"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/txt_pivot_item_test" />
-
-            <TextView
-                android:id="@+id/txt_rotation_z"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/txt_rotation_z" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/txt_compass_test"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/txt_compass_test" />
 
     </LinearLayout>
 
