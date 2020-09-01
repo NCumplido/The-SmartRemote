@@ -5,6 +5,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,6 +21,8 @@ import nich.project.thesmartremote.network.NetworkUtils;
 
 public class ConnectActivity extends AppCompatActivity {
 
+    private ArrayList<String> reachableIps;
+
     ////////// VIEW VARIABLES //////////
     Button btnOnOff,
             btnDiscover;
@@ -27,12 +30,11 @@ public class ConnectActivity extends AppCompatActivity {
     TextView txtConnectionStatus,
                 txtResults;
 
-    private String ipv4;
-
     ////////// WIFI VARIABLES //////////
     WifiManager wifiManager;
     WifiInfo wifiInfo;
     Boolean isWifiEnabled;
+    private String ipv4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +57,7 @@ public class ConnectActivity extends AppCompatActivity {
 
         txtConnectionStatus = findViewById(R.id.txt_connection_status);
 
-        txtResults = findViewById(R.id.txt_results);
+        //txtResults = findViewById(R.id.txt_results);
 
         btnOnOff = findViewById(R.id.btn_wifi_on_off);
 
@@ -68,7 +70,6 @@ public class ConnectActivity extends AppCompatActivity {
         });
 
         lstPeers = findViewById(R.id.lst_peers);
-
         btnOnOff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { toggleWifi(); }
@@ -109,17 +110,17 @@ public class ConnectActivity extends AppCompatActivity {
     }
 
     public void scanNetwork(){
-        txtResults.append("SSID: " + wifiInfo.getSSID());
-        txtResults.append("\nBSSID: " + wifiInfo.getBSSID());
-        txtResults.append("\nspeed: " + wifiInfo.getLinkSpeed());
-        txtResults.append("\ngateway IP: " + NetworkUtils.getIpFromIntSigned(wifiManager.getDhcpInfo().gateway));
+//        txtResults.append("SSID: " + wifiInfo.getSSID());
+//        txtResults.append("\nBSSID: " + wifiInfo.getBSSID());
+//        txtResults.append("\nspeed: " + wifiInfo.getLinkSpeed());
+//        txtResults.append("\ngateway IP: " + NetworkUtils.getIpFromIntSigned(wifiManager.getDhcpInfo().gateway));
         ipv4 = NetworkUtils.getIPV4Address();
-        txtResults.append("\nLocal Ipv4 IP: " + ipv4);
-        txtResults.append("\nReachable ips:");
+//        txtResults.append("\nLocal Ipv4 IP: " + ipv4);
+//        txtResults.append("\nReachable ips:");
 
         //Todo: only do this if wifi is connected
         ClientScanner clientScannerTask = new ClientScanner(ipv4);
-        ArrayList<String> reachableIps = null;
+        reachableIps = null;
         try {
             reachableIps = clientScannerTask.execute().get();
         } catch (InterruptedException e) {
@@ -127,9 +128,14 @@ public class ConnectActivity extends AppCompatActivity {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        for (String s : reachableIps){
-            txtResults.append("\n\t" + s);
-        }
+
+        //for (String s : reachableIps){ txtResults.append("\n\t" + s); }
+
+        ArrayAdapter<String> itemsAdapter = new ArrayAdapter( this,
+                R.layout.view_network_device_entry, R.id.txt_ip_address);
+
+        lstPeers.setAdapter(itemsAdapter);
+
     }
 
 }
