@@ -15,6 +15,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import nich.project.thesmartremote.database.DeviceDBItem;
+import nich.project.thesmartremote.database.DeviceRepo;
+
 public class DeviceDetail extends AppCompatActivity implements View.OnClickListener {
 
     Button m_btnSave,

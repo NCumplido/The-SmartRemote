@@ -3,6 +3,7 @@ package nich.project.thesmartremote;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.hardware.Camera;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -14,8 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -35,6 +34,9 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import nich.project.thesmartremote.database.PivotDeviceProfileDBItem;
+import nich.project.thesmartremote.database.PivotRepo;
 
 import static android.view.WindowManager.LayoutParams;
 
@@ -59,18 +61,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     DrawerLayout m_drawerLayout;
     NavigationView m_navView;
     androidx.appcompat.widget.Toolbar m_toolbar;
-    MenuItem m_selectedLocation;
-
-    private Button      m_btnConnect;
-
-    private ImageView   m_imgLocations,
-                        m_imgDevices,
-                        m_imgGestures;
-
-    private ImageButton m_imgBtnGestureListen,
-                        m_imgBtnChooseLocationList;
-
-    private TextView m_txtSelectedLocationProfile;
 
     View m_pivotDialogueView;
 
@@ -101,6 +91,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             m_testFridge,
             m_compassValue;
 
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    ImageView m_imageViewCamera;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,37 +106,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         ////////////////////////////////////////////////////////////////////////////// COMPASS TESTING //////////////////////////////////////////////////////////////////////////////
         m_sensorCompass = m_sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
         m_sensorManager.registerListener(this, m_sensorCompass, SensorManager.SENSOR_DELAY_NORMAL);
-
-        m_testAlexa = 0;
-        m_testLight =90;
-        m_testFridge = 180;
-
-        m_txtSelectedLocationProfile = findViewById(R.id.txt_selected_location);
-        
         deviceHasSensors();
 
         setupVibration();
-
         //setupWiFi();
-
         setupView();
-
         setupListeners();
         //pivotTestAdd();
-
-        listTest();
-
+        //listTest();
         setupDrawer();
-    }
-
-    public void listTest(){
-
-        TextView txtListTest = findViewById(R.id.txt_list_test);
-
-        m_pivotRepo = new PivotRepo(getApplicationContext());
-        ArrayList<HashMap<String, String>> pivotList =  m_pivotRepo.getPivotList();
-
-        txtListTest.setText(pivotList.toString());
+        setupVideoView();
+        setupCamera();
 
     }
 
@@ -209,16 +182,8 @@ excluding the force of gravity
 
         //m_imgGesturePerformed = findViewById(R.id.img_gesture_performed);
 
-        m_imgLocations = findViewById(R.id.img_locations);
-
-        m_imgDevices = findViewById(R.id.img_devices);
-
-        m_imgGestures = findViewById(R.id.img_gestures);
-
         //m_imgBtnGestureListen = findViewById(R.id.imgbtn_listen_gesture);
         //m_imgBtnChooseLocationList = findViewById(R.id.img_btn_list_locations);
-
-        m_btnConnect = findViewById(R.id.btn_connect);
 
     }
 
@@ -260,88 +225,6 @@ excluding the force of gravity
         m_sensorManager.registerListener(this, m_sensorGameRotation, SensorManager.SENSOR_DELAY_GAME);
 
         m_sensorManager.registerListener(this, m_sensorCompass, SensorManager.SENSOR_DELAY_NORMAL);
-
-//        m_imgGesturePerformed.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(m_isgestureListen == false){
-//                    m_isgestureListen = true;
-//                    m_imgGesturePerformed.setImageResource(R.drawable.shitty_go);
-//                }
-//                else
-//                {
-//                    m_isgestureListen = false;
-//                }
-//            }
-//        });
-/////////////////////////////////////////////////////// LISTENERS IMAGES ///////////////////////////////////////////////////////
-        m_imgLocations.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent manageLocationProfilesIntent = new Intent(getApplicationContext(), ManageLocationProfilesActivity.class);
-                startActivity(manageLocationProfilesIntent);
-            }
-        });
-
-        m_imgLocations.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Intent CompassCalibrateintent = new Intent(getApplicationContext(), CompassCalibrateActivity.class);
-                startActivity(CompassCalibrateintent);
-                return false;
-            }
-        });
-
-        m_imgDevices.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent manageDevicesIntent = new Intent(getApplicationContext(), ManageDevicesActivity.class);
-                startActivity(manageDevicesIntent);
-            }
-        });
-
-        m_imgGestures.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent manageGesturesIntent = new Intent(getApplicationContext(), ManageGesturesActivity.class);
-                startActivity(manageGesturesIntent);
-            }
-        });
-/////////////////////////////////////////////////////// LISTENERS BUTTONS ///////////////////////////////////////////////////////
-/*        m_imgBtnGestureListen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(m_isgestureListen == true) {
-
-                    Toast.makeText(getApplicationContext()," m_isgestureListen = false; ", Toast.LENGTH_SHORT).show();
-                    m_isgestureListen = false;
-
-                }
-                if(m_isgestureListen == false) {
-
-                    Toast.makeText(getApplicationContext()," m_isgestureListen = true; ", Toast.LENGTH_SHORT).show();
-                    m_isgestureListen = true;
-
-                }
-            }
-        });
- */
-
-        /* m_imgBtnChooseLocationList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPivotListDialogue();
-            }
-        });
-        */
-
-        m_btnConnect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent connectActivityIntent = new Intent(getApplicationContext(), ConnectActivity.class);
-                startActivity(connectActivityIntent);
-            }
-        });
 
     }
 
@@ -408,23 +291,10 @@ excluding the force of gravity
                     m_selectedLocationID = pivotId;
                     m_selectedPivotLocationProfile = m_pivotRepo.getPivotById(pivotId);
 
-                    m_txtSelectedLocationProfile.setText(m_selectedPivotLocationProfile.deviceName);
-
-                    //m_txtSelectedLocationProfile.setText("Selected location: " + m_locationProfileList.get(m_selectedLocationID));
-                    
-//                    TextView txtLocationProfileName = view.findViewById(R.id.txt_location_profile_name);
-//                    String locationProfileName = txtLocationProfileName.getText().toString();
-//
-//                    //getPivotById();
-//                    txt_pivot_location_profile_id
-//                            txt_device_id
-//                    txt_pivot_device_name
-//                            txt_pivot_location_profile_name
-//                    txt_pivot_bearing
-                    //m_pivotRepo.delete(pivotId);
                 }
 
             });
+
             lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -623,6 +493,46 @@ excluding the force of gravity
         return true;
     }
 
+    public void setupVideoView(){    }
+
+    public void setupCamera(){
+
+    }
+    public static Camera getCameraInstance(){
+        Camera c = null;
+        try {
+            c = Camera.open(); // attempt to get a Camera instance
+        }
+        catch (Exception e){
+            // Camera is not available (in use or does not exist)
+        }
+        return c; // returns null if camera is unavailable
+    }
+//https://developer.android.com/training/camera/cameradirect
+    public void setCamera(Camera camera) {
+        if (mCamera == camera) { return; }
+
+        stopPreviewAndFreeCamera();
+
+        mCamera = camera;
+
+        if (mCamera != null) {
+            List<Size> localSizes = mCamera.getParameters().getSupportedPreviewSizes();
+            supportedPreviewSizes = localSizes;
+            requestLayout();
+
+            try {
+                mCamera.setPreviewDisplay(holder);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // Important: Call startPreview() to start updating the preview
+            // surface. Preview must be started before you can take a picture.
+            mCamera.startPreview();
+        }
+    }
+
     //TODO: Register and unregister sensors
 //    @Override
 //    protected void onResume() {
@@ -658,3 +568,110 @@ excluding the force of gravity
 ////            window.addFlags(FLAG_TURN_SCREEN_ON);
 ////            //WindowManager.LayoutParams(FLAG_TURN_SCREEN_ON) //that you desire:            FLAG_TURN_SCREEN_ON
 //        }
+
+//        m_imgGesturePerformed.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(m_isgestureListen == false){
+//                    m_isgestureListen = true;
+//                    m_imgGesturePerformed.setImageResource(R.drawable.shitty_go);
+//                }
+//                else
+//                {
+//                    m_isgestureListen = false;
+//                }
+//            }
+//        });
+/////////////////////////////////////////////////////// LISTENERS IMAGES ///////////////////////////////////////////////////////
+//        m_imgLocations.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent manageLocationProfilesIntent = new Intent(getApplicationContext(), ManageLocationProfilesActivity.class);
+//                startActivity(manageLocationProfilesIntent);
+//            }
+//        });
+//
+//        m_imgLocations.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                Intent CompassCalibrateintent = new Intent(getApplicationContext(), CompassCalibrateActivity.class);
+//                startActivity(CompassCalibrateintent);
+//                return false;
+//            }
+//        });
+//
+//        m_imgDevices.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent manageDevicesIntent = new Intent(getApplicationContext(), ManageDevicesActivity.class);
+//                startActivity(manageDevicesIntent);
+//            }
+//        });
+//
+//        m_imgGestures.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent manageGesturesIntent = new Intent(getApplicationContext(), ManageGesturesActivity.class);
+//                startActivity(manageGesturesIntent);
+//            }
+//        });
+/////////////////////////////////////////////////////// LISTENERS BUTTONS ///////////////////////////////////////////////////////
+/*        m_imgBtnGestureListen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(m_isgestureListen == true) {
+
+                    Toast.makeText(getApplicationContext()," m_isgestureListen = false; ", Toast.LENGTH_SHORT).show();
+                    m_isgestureListen = false;
+
+                }
+                if(m_isgestureListen == false) {
+
+                    Toast.makeText(getApplicationContext()," m_isgestureListen = true; ", Toast.LENGTH_SHORT).show();
+                    m_isgestureListen = true;
+
+                }
+            }
+        });
+ */
+
+        /* m_imgBtnChooseLocationList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPivotListDialogue();
+            }
+        });
+        */
+
+//        m_btnConnect.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent connectActivityIntent = new Intent(getApplicationContext(), ConnectActivity.class);
+//                startActivity(connectActivityIntent);
+//            }
+//        });
+
+//    public void listTest(){
+//
+//        TextView txtListTest = findViewById(R.id.txt_list_test);
+//
+//        m_pivotRepo = new PivotRepo(getApplicationContext());
+//        ArrayList<HashMap<String, String>> pivotList =  m_pivotRepo.getPivotList();
+//
+//        txtListTest.setText(pivotList.toString());
+//
+//    }
+
+////////////////////////////////////////////////////////////////////// PIVOT STUFF //////////////////////////////////////////////////////////////////////
+//m_txtSelectedLocationProfile.setText("Selected location: " + m_locationProfileList.get(m_selectedLocationID));
+
+//                    TextView txtLocationProfileName = view.findViewById(R.id.txt_location_profile_name);
+//                    String locationProfileName = txtLocationProfileName.getText().toString();
+//
+//                    //getPivotById();
+//                    txt_pivot_location_profile_id
+//                            txt_device_id
+//                    txt_pivot_device_name
+//                            txt_pivot_location_profile_name
+//                    txt_pivot_bearing
+//m_pivotRepo.delete(pivotId);

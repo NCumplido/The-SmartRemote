@@ -1,4 +1,4 @@
-package nich.project.thesmartremote;
+package nich.project.thesmartremote.database;
 
 import android.content.ContentValues;
 import android.content.Context;

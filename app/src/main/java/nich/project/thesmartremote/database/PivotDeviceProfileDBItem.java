@@ -1,4 +1,4 @@
-package nich.project.thesmartremote;
+package nich.project.thesmartremote.database;
 
 ///////////////////////////////////////// OBJECT CLASS FOR SQL DATABASE /////////////////////////////////////////
 public class PivotDeviceProfileDBItem {

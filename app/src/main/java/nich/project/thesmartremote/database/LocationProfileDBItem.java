@@ -1,4 +1,4 @@
-package nich.project.thesmartremote;
+package nich.project.thesmartremote.database;
 
 /*
 Parts of code from:
@@ -7,15 +7,15 @@ Swansea University
 */
 
 ///////////////////////////////////////// OBJECT CLASS FOR SQL DATABASE /////////////////////////////////////////
-public class DeviceDBItem {
+public class LocationProfileDBItem {
     // Labels table name
-    public static final String TABLE = "Device";
+    public static final String TABLE = "LocationProfile";
 
     // Labels Table Columns names
     public static final String KEY_ID = "id";
     public static final String KEY_name = "name";
 
     // property help us to keep data
-    public int device_ID;
+    public int locationProfile_ID;
     public String name;
 }

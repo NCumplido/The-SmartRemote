@@ -23,6 +23,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import nich.project.thesmartremote.database.DeviceRepo;
+
 public class CompassCalibrateActivity extends AppCompatActivity implements SensorEventListener {
 
     private int m_compassValues;

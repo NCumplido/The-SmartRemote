@@ -19,93 +19,20 @@
         android:theme="?attr/actionBarTheme" />
         -->
 
+    <ImageView
+        android:id="@+id/img_camera"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"
-        app:menu="@menu/nav_drawer" />
+        app:menu="@menu/nav_drawer" >
 
+    </com.google.android.material.navigation.NavigationView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/txt_selected_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
-
-        <TextView
-            android:id="@+id/txt_list_test"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/txt_list_test" />
-
-        <TextView
-            android:id="@+id/txt_pivot_item_test"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/txt_pivot_item_test" />
-
-        <LinearLayout
-            android:id="@+id/lin_layout_top_images"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/img_locations"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:contentDescription="@string/locations_image_button"
-                app:srcCompat="@android:drawable/ic_menu_mylocation" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <ImageView
-                android:id="@+id/img_gestures"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:contentDescription="@string/img_gestures"
-                app:srcCompat="@android:drawable/ic_menu_always_landscape_portrait" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <ImageView
-                android:id="@+id/img_devices"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:contentDescription="@string/add_device_image"
-                app:srcCompat="@android:drawable/ic_btn_speak_now" />
-
-            <!--        <ImageView-->
-            <!--            android:id="@+id/img_spanner"-->
-            <!--            android:layout_width="wrap_content"-->
-            <!--            android:layout_height="wrap_content"-->
-            <!--            android:layout_weight="1"-->
-            <!--            app:srcCompat="@android:drawable/ic_menu_manage" />-->
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/btn_connect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_connect_devices" />
-
-    </LinearLayout>
 
     <!--
     <ImageButton

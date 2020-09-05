@@ -18,6 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import nich.project.thesmartremote.database.DeviceRepo;
+
 public class ManageDevicesActivity extends AppCompatActivity {
 
     private Button m_btnDone;

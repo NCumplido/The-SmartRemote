@@ -1,4 +1,4 @@
-package nich.project.thesmartremote;
+package nich.project.thesmartremote.database;
 
 public class Device {
 

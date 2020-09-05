@@ -23,6 +23,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import nich.project.thesmartremote.database.DeviceRepo;
+import nich.project.thesmartremote.database.LocationProfileDBItem;
+import nich.project.thesmartremote.database.LocationProfileRepo;
+import nich.project.thesmartremote.database.PivotDeviceProfileDBItem;
+import nich.project.thesmartremote.database.PivotRepo;
+
 public class LocationProfileDetail extends AppCompatActivity implements SensorEventListener, View.OnClickListener{
 
     Button m_btnSave,
