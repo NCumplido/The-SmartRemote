@@ -57,7 +57,7 @@ public class ConnectActivity extends AppCompatActivity {
 
         txtConnectionStatus = findViewById(R.id.txt_connection_status);
 
-        //txtResults = findViewById(R.id.txt_results);
+        txtResults = findViewById(R.id.txt_results);
 
         btnOnOff = findViewById(R.id.btn_wifi_on_off);
 
@@ -110,13 +110,8 @@ public class ConnectActivity extends AppCompatActivity {
     }
 
     public void scanNetwork(){
-//        txtResults.append("SSID: " + wifiInfo.getSSID());
-//        txtResults.append("\nBSSID: " + wifiInfo.getBSSID());
-//        txtResults.append("\nspeed: " + wifiInfo.getLinkSpeed());
-//        txtResults.append("\ngateway IP: " + NetworkUtils.getIpFromIntSigned(wifiManager.getDhcpInfo().gateway));
+
         ipv4 = NetworkUtils.getIPV4Address();
-//        txtResults.append("\nLocal Ipv4 IP: " + ipv4);
-//        txtResults.append("\nReachable ips:");
 
         //Todo: only do this if wifi is connected
         ClientScanner clientScannerTask = new ClientScanner(ipv4);
@@ -128,6 +123,14 @@ public class ConnectActivity extends AppCompatActivity {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+
+        txtResults.append("SSID: " + wifiInfo.getSSID());
+        txtResults.append("\nBSSID: " + wifiInfo.getBSSID());
+        txtResults.append("\nspeed: " + wifiInfo.getLinkSpeed());
+        txtResults.append("\ngateway IP: " + NetworkUtils.getIpFromIntSigned(wifiManager.getDhcpInfo().gateway));
+        //ipv4 = NetworkUtils.getIPV4Address();
+        txtResults.append("\nLocal Ipv4 IP: " + ipv4);
+        txtResults.append("\nReachable ips:" + reachableIps.toString());
 
         //for (String s : reachableIps){ txtResults.append("\n\t" + s); }
 

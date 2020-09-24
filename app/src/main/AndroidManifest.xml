@@ -46,7 +46,7 @@
 
         <activity
             android:name=".ConnectActivity"
-            android:label="Connect to a network"
+            android:label="Network"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".LocationProfileDetail"

@@ -4,19 +4,10 @@
     <group android:checkableBehavior="single">
 
         <item
-            android:id="@+id/nav_example_location1"
+            android:id="@+id/nav_set_cast_bearing"
             android:icon="@drawable/ic_place"
-            android:title="Example location" />
+            android:title="Set bearing location" />
 
-        <item
-            android:id="@+id/nav_example_location2"
-            android:icon="@drawable/ic_place"
-            android:title="Example location" />
-
-        <item
-            android:id="@+id/nav_example_location3"
-            android:icon="@drawable/ic_place"
-            android:title="Example location" />
     </group>
 
     <group android:checkableBehavior="single">
@@ -25,6 +16,19 @@
             android:id="@+id/nav_locations"
             android:icon="@android:drawable/ic_menu_mylocation"
             android:title="Manage Locations" />
+        <item
+            android:id="@+id/nav_devices"
+            android:icon="@android:drawable/ic_menu_preferences"
+            android:title="Manage Devices" />
+
+    </group>
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_connect_activity"
+            android:icon="@android:drawable/ic_menu_upload"
+            android:title="Connect" />
 
     </group>
 

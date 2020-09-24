@@ -7,16 +7,6 @@
             android:id="@+id/nav"
             android:icon="@drawable/ic_place"
             android:title="Example location" />
-
-        <item
-            android:id="@+id/nav_example_location2"
-            android:icon="@drawable/ic_place"
-            android:title="Example location" />
-
-        <item
-            android:id="@+id/nav_example_location3"
-            android:icon="@drawable/ic_place"
-            android:title="Example location" />
     </group>
 
     <group android:checkableBehavior="single">

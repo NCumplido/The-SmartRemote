@@ -3,7 +3,6 @@ package nich.project.thesmartremote;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.hardware.Camera;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -115,8 +114,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         //pivotTestAdd();
         //listTest();
         setupDrawer();
-        setupVideoView();
-        setupCamera();
 
     }
 
@@ -462,27 +459,21 @@ excluding the force of gravity
         Menu menu = m_navView.getMenu();
 
         switch(item.getItemId()){
-            case R.id.nav_example_location1:
-
-                Toast.makeText(getApplicationContext(), "Example 1", Toast.LENGTH_SHORT)
-                        .show();
+            case R.id.nav_devices:
+                Intent manageDeviceIntent = new Intent(this, ManageDevicesActivity.class);
+                startActivity(manageDeviceIntent);
                 //m_selectedLocation = item;
                 //menu.findItem(item.getItemId()).setVisible(false);
-                break;
-
-            case R.id.nav_example_location2:
-                Toast.makeText(getApplicationContext(), "Example 2", Toast.LENGTH_SHORT)
-                        .show();
-                break;
-
-            case R.id.nav_example_location3:
-                Toast.makeText(getApplicationContext(), "Example 3", Toast.LENGTH_SHORT)
-                        .show();
                 break;
 
             case R.id.nav_locations:
                  Intent manageLocationIntent = new Intent(this, ManageLocationProfilesActivity.class);
                     startActivity(manageLocationIntent);
+                    break;
+
+            case R.id.nav_connect_activity:
+                Intent connectionIntent = new Intent(this, ConnectActivity.class);
+                startActivity(connectionIntent);
         }
 
         m_drawerLayout.closeDrawer(GravityCompat.END);
@@ -491,46 +482,6 @@ excluding the force of gravity
         //m_navView.setCheckedItem(R.id.nav_home);
 
         return true;
-    }
-
-    public void setupVideoView(){    }
-
-    public void setupCamera(){
-
-    }
-    public static Camera getCameraInstance(){
-        Camera c = null;
-        try {
-            c = Camera.open(); // attempt to get a Camera instance
-        }
-        catch (Exception e){
-            // Camera is not available (in use or does not exist)
-        }
-        return c; // returns null if camera is unavailable
-    }
-//https://developer.android.com/training/camera/cameradirect
-    public void setCamera(Camera camera) {
-        if (mCamera == camera) { return; }
-
-        stopPreviewAndFreeCamera();
-
-        mCamera = camera;
-
-        if (mCamera != null) {
-            List<Size> localSizes = mCamera.getParameters().getSupportedPreviewSizes();
-            supportedPreviewSizes = localSizes;
-            requestLayout();
-
-            try {
-                mCamera.setPreviewDisplay(holder);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            // Important: Call startPreview() to start updating the preview
-            // surface. Preview must be started before you can take a picture.
-            mCamera.startPreview();
-        }
     }
 
     //TODO: Register and unregister sensors
